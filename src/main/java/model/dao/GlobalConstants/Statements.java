@@ -8,5 +8,8 @@ public interface Statements {
     String INSERT_CATEGORY = "INSERT INTO category (category) VALUES (?)";
     String CATEGORY_MAX_ID = "SELECT MAX(id) FROM category";
     String ALL_FROM_CATEGORY = "SELECT * FROM category";
+    String INSERT_MAIL = "INSERT INTO mail (sender_id, recipient_id, title, tags, category_id, message) VALUES (?,?,?,?,?,?)";
+    String MAIL_MAX_ID = "SELECT MAX(id) FROM mail";
+    String ALL_FROM_MAIL = "SELECT * FROM mail";
 
 }

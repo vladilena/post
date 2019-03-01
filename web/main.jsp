@@ -15,7 +15,7 @@
 <body>
 <jstl:choose>
     <jstl:when test="${not empty sessionScope.user}">
-        <p>${sessionScope.user.name}</p>
+        <p>${sessionScope.user.email}</p>
         <p><a href="controller?action=send">Send email</a></p>
         <p><a href="controller?action=logout">Logout</a></p>
     </jstl:when>

@@ -26,7 +26,7 @@ public class CommandFactory {
         comands.put("logout", new LogoutCommand());
         comands.put("main", new MainCommand());
         comands.put("addcategory", new CreateCategoryCommand());
-//        comands.put("send", new SendCommand());
+        comands.put("send", new SendMailCommand());
 //        comands.put("sort", new SortCommand());
 
 

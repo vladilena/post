@@ -24,10 +24,10 @@ public class DAOFactory {
         return UserDAO.getInstance();
     }
 
-//    public MailDAO getMailDAO() {
-//        return MailDAO.getInstance();
-//    }
-//
+    public MailDAO getMailDAO() {
+        return MailDAO.getInstance();
+    }
+
     public CategoryDAO getCategoryDAO() {
         return CategoryDAO.getInstance();
     }
