@@ -10,13 +10,27 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <jstl:if test="${not empty requestScope.notExists}">
-    <p>This user not exist</p>
+    <div class="alert alert-danger" role="alert">This user not exist</div>
 </jstl:if>
 
+<form role="form" class="form-inline" method="post" action="controller?action=login">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
+    </div>
+    <div class="form-group">
+        <label for="pass">Password</label>
+        <input type="password" class="form-control" name="password" id="pass" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-success">Log in</button>
+</form>
+<%--
 <form method="post" action="controller?action=login">
     <p><label>
         <input type="text" name="email" size="40"/>
@@ -27,6 +41,7 @@
     <p><input type="submit" value="Login" /></p>
     <p></p>
 </form>
+--%>
 
 </body>
 </html>

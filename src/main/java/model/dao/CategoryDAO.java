@@ -1,8 +1,6 @@
 package model.dao;
 
 import model.entity.Category;
-import model.entity.User;
-import model.services.Command;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,11 +16,11 @@ import static model.dao.GlobalConstants.Statements.*;
 public class CategoryDAO extends AbstractDAO {
     private static CategoryDAO instance;
 
-    private Set<Category> categories;
-
-    private CategoryDAO() {
-        categories = new HashSet<Category>();
-    }
+//    private Set<Category> categories;
+//
+//    private CategoryDAO() {
+//        categories = new HashSet<Category>();
+//    }
 
     public static CategoryDAO getInstance() {
         if (instance == null) {
@@ -31,34 +29,9 @@ public class CategoryDAO extends AbstractDAO {
         return instance;
     }
 
-    public int addCustomCategory(Category category) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        int resultAdded = 0;
-
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(INSERT_CATEGORY);
-
-            statement.setString(1, category.getCategory());
-
-            resultAdded = statement.executeUpdate();
-
-// инкремент??
-            ResultSet rs = statement.executeQuery(CATEGORY_MAX_ID);
-            rs.next();
-            int categoryId = rs.getInt(ID);
-            category.setId(categoryId);
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultAdded;
-    }
 
     public Set<Category> getAllCategories() {
-        Set<Category> categories = new HashSet<>();
+        Set<Category>categories = new HashSet<>();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -68,11 +41,12 @@ public class CategoryDAO extends AbstractDAO {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt(ID);
-                String category = rs.getString(CATEGORY);
+                String categoryName = rs.getString(CATEGORY);
 
                 Category newCategory = new Category();
+
                 newCategory.setId(id);
-                newCategory.setCategory(category);
+                newCategory.setCategoryName(categoryName);
                 categories.add(newCategory);
             }
         } catch (SQLException e) {
@@ -80,5 +54,26 @@ public class CategoryDAO extends AbstractDAO {
         }
         return categories;
     }
-}
 
+    public int getCategoryIdByName(String categoryName) {
+        int categoryId = 0;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            System.out.println("connection in CategoryDAO.getCategoryIDByName");
+            statement = connection.prepareStatement(FIND_CATEGORY_BY_ID);
+
+            statement.setString(1, categoryName);
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                categoryId = rs.getInt(ID);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categoryId;
+    }
+}

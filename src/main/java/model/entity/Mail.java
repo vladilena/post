@@ -7,29 +7,29 @@ import java.util.Objects;
 
 public class Mail {
     private int id;
-    private int sender;
-    private int recipient;
+    private String sender;
+    private String recipient;
     private Timestamp dateTime;
     private String title;
     private String tags;
-    private int category;
+    private String category;
     private String message;
+    private int relatedUser;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mail mail = (Mail) o;
-        return category == mail.category &&
-                Objects.equals(dateTime, mail.dateTime) &&
-                title.equals(mail.title) &&
+        return Objects.equals(title, mail.title) &&
                 Objects.equals(tags, mail.tags) &&
+                category.equals(mail.category) &&
                 message.equals(mail.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateTime, title, tags, category, message);
+        return Objects.hash(title, tags, category, message);
     }
 
     public int getId() {
@@ -40,19 +40,19 @@ public class Mail {
         this.id = id;
     }
 
-    public int getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(int sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public int getRecipient() {
+    public String getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(int recipient) {
+    public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 
@@ -80,11 +80,11 @@ public class Mail {
         this.tags = tags;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -96,17 +96,11 @@ public class Mail {
         this.message = message;
     }
 
-    @Override
-    public String toString() {
-        return "Mail{" +
-                "id=" + id +
-                ", sender=" + sender +
-                ", recipient=" + recipient +
-                ", dateTime=" + dateTime +
-                ", title='" + title + '\'' +
-                ", tags=" + tags +
-                ", category=" + category +
-                ", message='" + message + '\'' +
-                '}';
+    public int getRelatedUser() {
+        return relatedUser;
+    }
+
+    public void setRelatedUser(int relatedUser) {
+        this.relatedUser = relatedUser;
     }
 }

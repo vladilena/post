@@ -7,7 +7,6 @@ public class DAOFactory {
     private DAOFactory() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Driver loaded success");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -30,5 +29,9 @@ public class DAOFactory {
 
     public CategoryDAO getCategoryDAO() {
         return CategoryDAO.getInstance();
+    }
+
+    public CustomerCategoryDAO getCustomerCategoryDAO() {
+        return CustomerCategoryDAO.getInstance();
     }
 }

@@ -13,13 +13,15 @@
 </head>
 <body>
 
+<jstl:if test="${not empty requestScope.notAdd}">
+    <p>Something wrong. Try again</p>
+</jstl:if>
+
     <form method="post" action="controller?action=send">
+
         <p><label>
-            <input type="number" name="sender" size="100"/>
-        </label>sender_id</p>
-        <p><label>
-            <input type="number" name="recipient" size="100" />
-        </label>recipient_id</p>
+            <input type="text" name="recipient" size="100" />
+        </label>recipient email</p>
         <p><label>
             <input type="text" name="title" size="50" />
         </label>title</p>

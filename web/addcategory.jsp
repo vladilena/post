@@ -22,7 +22,7 @@
     </label>category name</p>
     <p><label>
 
-    <p><input type="submit" value="Add new category" /></p>
+    <p><input type="submit" value="Add new category"/></p>
     <p></p>
 </form>
 

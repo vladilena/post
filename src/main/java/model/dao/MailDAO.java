@@ -4,7 +4,7 @@ import model.entity.Mail;
 import model.entity.User;
 
 import java.sql.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,14 +14,10 @@ import static model.dao.GlobalConstants.Statements.*;
 
 public class MailDAO extends AbstractDAO {
     private static MailDAO instance;
+    int resultAdded;
+    List<Mail> mails;
 
-    private List<Mail> mails;
-
-    private MailDAO() {
-        mails = new LinkedList<>();
-    }
-
-    public static MailDAO getInstance() {
+    static MailDAO getInstance() {
         if (instance == null) {
             instance = new MailDAO();
         }
@@ -29,24 +25,23 @@ public class MailDAO extends AbstractDAO {
     }
 
     public int sendMail(Mail mail) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        int resultAdded = 0;
+         Connection connection = null;
+         PreparedStatement statement = null;
 
         try {
             connection = getConnection();
             statement = connection.prepareStatement(INSERT_MAIL);
 
-            statement.setInt(1, mail.getSender());
-            statement.setInt(2, mail.getRecipient());
+            statement.setString(1, mail.getSender());
+            statement.setString(2, mail.getRecipient());
             statement.setString(3, mail.getTitle());
             statement.setString(4, mail.getTags());
-            statement.setInt(5, mail.getCategory());
+            statement.setString(5, mail.getCategory());
             statement.setString(6, mail.getMessage());
+            statement.setInt(7, mail.getRelatedUser());
 
             resultAdded = statement.executeUpdate();
 
-// инкремент??
             ResultSet rs = statement.executeQuery(MAIL_MAX_ID);
             rs.next();
             int mailId = rs.getInt(ID);
@@ -59,46 +54,227 @@ public class MailDAO extends AbstractDAO {
         return resultAdded;
     }
 
-    public List<Mail> getAllMails() {
-        List<Mail> mails = new LinkedList<>();
+    public List<Mail> getAllMails(User user) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        mails = new LinkedList<>();
+        int userId = user.getId();
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(ALL_FROM_MAIL);
+
+            statement.setInt(1, userId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        return mails;
+    }
+
+    public List<Mail> getAllMailsWithoutParams() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        mails = new LinkedList<>();
+
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(ALL_FROM_MAIL_WITHOUT);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        return mails;
+    }
+
+    public List<Mail> getMailByCategory(String category, User user) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        mails = new LinkedList<>();
+
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(ALL_FROM_MAIL_WHERE_CATEGORY_AND_USER);
+
+            statement.setString(1, category);
+            statement.setInt(2, user.getId());
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mails;
+    }
+
+    public List<Mail> getMailByTimePeriod(String from, String to, User user) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        mails = new LinkedList<>();
+//2019-12-02T12:30
+        // 2019-03-01 13:32:09
+
+        Timestamp fromStamp = Timestamp.valueOf(from.replace("T"," ")+":00");
+        Timestamp toStamp = Timestamp.valueOf(to.replace("T"," ")+":00");
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(MAIL_IN_TIME_PERIOD);
+            statement.setTimestamp(1, fromStamp);
+            statement.setTimestamp(2, toStamp);
+            statement.setInt(3, user.getId());
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mails;
+    }
+
+    private Mail recordFromResultSet(ResultSet rs) throws SQLException {
+        int id = rs.getInt(ID);
+        String sender = rs.getString(SENDER);
+        String recipient = rs.getString(RECIPIENT);
+        Timestamp dateTime = rs.getTimestamp(DATE_TIME);
+        String title = rs.getString(TITLE);
+        String tags = rs.getString(TAGS);
+        String category = rs.getString(CATEGORY);
+        String message = rs.getString(MESSAGE);
+        int relatedUser = rs.getInt(RELATED_USER);
+
+        Mail mail = new Mail();
+        mail.setId(id);
+        mail.setSender(sender);
+        mail.setRecipient(recipient);
+        mail.setDateTime(dateTime);
+        mail.setTitle(title);
+        mail.setTags(tags);
+        mail.setCategory(category);
+        mail.setMessage(message);
+        mail.setRelatedUser(relatedUser);
+
+        return mail;
+    }
+
+    public void deleteMail(Mail mail) {
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = getConnection();
-            statement = connection.prepareStatement(ALL_FROM_MAIL);
+            statement = connection.prepareStatement(DELETE_FROM_MAIL);
+            statement.setInt(1, mail.getId());
+            statement.executeUpdate();
+            System.out.println("was been deleted");
 
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt(ID);
-                int senderId = rs.getInt(SENDER_ID);
-                int recipientId = rs.getInt(RECIPIENT_ID);
-                Timestamp dateTime = rs.getTimestamp(DATE_TIME);
-                String title = rs.getString(TITLE);
-                String tags = rs.getString(TAGS);
-                int categoryId = rs.getInt(CATEGORY_ID);
-                String message = rs.getString(MESSAGE);
-
-                Mail mail = new Mail();
-                mail.setId(id);
-                mail.setSender(senderId);
-                mail.setRecipient(recipientId);
-                mail.setDateTime(dateTime);
-                mail.setTitle(title);
-                mail.setTags(tags);
-                mail.setCategory(categoryId);
-                mail.setMessage(message);
-
-                mails.add(mail);
-            }
-    } catch (SQLException e1) {
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-return mails;
-    }
 
     }
+
+    public int changeCategory(Mail mail, String category) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(CHANGE_CATEGORY);
+            statement.setString(1, category);
+            statement.setInt(2, mail.getId());
+            resultAdded = statement.executeUpdate();
+            System.out.println("change category");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultAdded;
+    }
+
+    public List<Mail> getMailByTitle(String title, User user) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        mails = new ArrayList<>();
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(GET_MAIL_BY_TITLE);
+            statement.setString(1, title);
+            statement.setInt(2, user.getId());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mails;
+    }
+
+    public List<Mail> getMailByTag(String tag, User currentUser) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        mails = new LinkedList<>();
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(FIND_MAIL_BY_TAG);
+            statement.setString(1, "%"+tag+"%");
+            statement.setInt(2,currentUser.getId());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mails;
+    }
+
+    public List<Mail> getMailBySenderOrRecipient(String email, User user){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        mails = new LinkedList<>();
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(FIND_MAIL_BY_RECIPIENT_OR_SENDER);
+            statement.setString(1, email);
+            statement.setString(2, email);
+            statement.setInt(3,user.getId());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                mails.add(recordFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mails;
+    }
+
+}
 
 
 

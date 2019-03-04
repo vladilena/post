@@ -40,12 +40,12 @@ public class UserDAO extends AbstractDAO {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
-            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getLastName());
 
 
             resultAdded = statement.executeUpdate();
 
-// инкремент??
+// инкремент
             ResultSet rs = statement.executeQuery(USERS_MAX_ID);
             rs.next();
             int userId = rs.getInt(ID);

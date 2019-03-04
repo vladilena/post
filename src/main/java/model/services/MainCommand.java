@@ -1,10 +1,17 @@
 package model.services;
 
+import model.dao.CategoryDAO;
+import model.dao.CustomerCategoryDAO;
 import model.dao.DAOFactory;
+import model.dao.MailDAO;
+import model.entity.Category;
+import model.entity.CustomerCategory;
+import model.entity.Mail;
 import model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 public class MainCommand implements Command {
     @Override
@@ -12,16 +19,36 @@ public class MainCommand implements Command {
         DAOFactory factory = DAOFactory.getInstance();
         User user = (User) request.getSession().getAttribute("user");
 
-//        if (user != null) {
-//            BunchDAO bunchDAO = factory.getBunchDAO();
-//            List<Bunch> bunches = bunchDAO.getAllBunches(user);
-//            request.setAttribute("bunches", bunches);
-//        } else {
-//            FlowerDAO flowerDAO = factory.getFlowerDAO();
-//            List<Flower> flowers = flowerDAO.getAll();
-//            request.setAttribute("flowers", flowers);
-//        }
+        if (user != null) {
+            MailDAO mailDAO = factory.getMailDAO();
+            List<Mail> mails = mailDAO.getAllMails(user);
+
+            CategoryDAO categoryDAO = factory.getCategoryDAO();
+            Set<Category> categories = categoryDAO.getAllCategories();
+
+            CustomerCategoryDAO customerCategoryDAO = factory.getCustomerCategoryDAO();
+            Set<CustomerCategory> customerCategories = customerCategoryDAO.getAllCustomerCategories(user);
+
+
+            request.setAttribute("custom_categories", customerCategories);
+            request.setAttribute("mails", mails);
+            request.setAttribute("categories", categories);
+        }
 
         return "main.jsp";
     }
+
+
+    public static void main(String[] args) {
+        DAOFactory factory = DAOFactory.getInstance();
+        CategoryDAO categoryDAO = factory.getCategoryDAO();
+        Set<Category> categories = categoryDAO.getAllCategories();
+
+        for (Category category : categories) {
+            System.out.println(category.toString());
+        }
+
+
+    }
+
 }
