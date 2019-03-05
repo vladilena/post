@@ -5,7 +5,6 @@ public interface Statements {
     String USERS_MAX_ID = "SELECT MAX(id) FROM user";
     String ALL_FROM_USERS = "SELECT * FROM user";
     String SELECT_USER_ON_PASSWORD_EMAIL = "SELECT id, first_name, last_name FROM user WHERE email = ? AND password = ?";
-    String INSERT_CATEGORY = "INSERT INTO category (category) VALUES (?)";
     String CATEGORY_MAX_ID = "SELECT MAX(id) FROM customer_category";
     String ALL_FROM_CATEGORY = "SELECT * FROM category";
     String INSERT_MAIL = "INSERT INTO mail (sender, recipient, title, tags, category, message, related_user) VALUES (?,?,?,?,?,?,?)";
@@ -22,4 +21,5 @@ public interface Statements {
     String GET_MAIL_BY_TITLE = "SELECT * FROM mail where title = ? and related_user = ?";
     String FIND_MAIL_BY_TAG = "SELECT * FROM mail where tags LIKE ? and related_user = ?";
     String FIND_MAIL_BY_RECIPIENT_OR_SENDER = "SELECT * FROM mail WHERE sender = ? OR recipient = ? AND related_user = ?";
+    String ALL_EMAILS_FROM_USERS = "SELECT email FROM user";
 }

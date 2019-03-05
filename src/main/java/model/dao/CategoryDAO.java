@@ -16,11 +16,6 @@ import static model.dao.GlobalConstants.Statements.*;
 public class CategoryDAO extends AbstractDAO {
     private static CategoryDAO instance;
 
-//    private Set<Category> categories;
-//
-//    private CategoryDAO() {
-//        categories = new HashSet<Category>();
-//    }
 
     public static CategoryDAO getInstance() {
         if (instance == null) {

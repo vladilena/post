@@ -8,19 +8,22 @@ import model.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class FindMailBySenderOrRecipient implements Command {
+
+public class FindMailByTitleCommand implements Command {
+
     @Override
     public String execute(HttpServletRequest request) {
         Validation validation = new Validation();
         List<Mail> mails = null;
 
         User currentUser = (User) request.getSession().getAttribute("user");
-        String email =  request.getParameter("email");
+        String title =  request.getParameter("title");
 
-        if (validation.isRecipientEmailValid(email)){
+        if(validation.isTitleValid(title)){
             DAOFactory daoFactory = DAOFactory.getInstance();
             MailDAO mailDAO = daoFactory.getMailDAO();
-            mails = mailDAO.getMailBySenderOrRecipient(email,currentUser);
+
+            mails = mailDAO.getMailByTitle(title,currentUser);
             if(mails.size()==0){
                 request.setAttribute("noInfo", "No messages for this parameters");
             }else {

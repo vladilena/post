@@ -7,6 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!-- LOCALIZATION -->
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" />
+<!-- LOCALIZATION -->
+
 <html>
 <head>
     <title>Registration</title>
@@ -14,11 +21,26 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
-<jstl:if test="${not empty requestScope.notAdd}">
-    <div class="alert alert-danger" role="alert">This user is exists</div>
+
+<!-- LOCALIZATION -->
+<title><fmt:message key="text.title.users"/></title>
+<!-- LOCALIZATION -->
+
+<jstl:if test="${not empty requestScope.invalidlogin}">
+    <div class="alert alert-danger" role="alert">Wrong email format. Try again</div>
 </jstl:if>
-
-
+<jstl:if test="${not empty requestScope.invalidPassword}">
+    <div class="alert alert-danger" role="alert">Wrong password format. Try again</div>
+</jstl:if>
+<jstl:if test="${not empty requestScope.invalidFirstName}">
+    <div class="alert alert-danger" role="alert">Wrong first name format. Try again</div>
+</jstl:if>
+<jstl:if test="${not empty requestScope.invalidLastName}">
+    <div class="alert alert-danger" role="alert">Wrong last name format. Try again</div>
+</jstl:if>
+<jstl:if test="${not empty requestScope.notAdd}">
+    <div class="alert alert-danger" role="alert">User with this email is already exists</div>
+</jstl:if>
 
 <form role="form" method="post" action="controller?action=register">
     <div class="form-group">
@@ -41,25 +63,6 @@
     <button type="submit" class="btn btn-success">Registration</button>
 </form>
 
-<%--
-<form method="post" action="controller?action=register">
-    <p><label>
-        <input type="text" name="email" size="40"/>
-    </label>email*</p>
-    <p><label>
-        <input type="password" name="password" size="20" />
-    </label>password*</p>
-    <p><label>
-        <input type="text" name="first_name" size="30" />
-    </label>first name</p>
-    <p><label>
-        <input type="text" name="last_name" size="30" />
-    </label>last name</p>
-
-    <p><input type="submit" value="Register" /></p>
-    <p></p>
-</form>
---%>
 
 </body>
 </html>

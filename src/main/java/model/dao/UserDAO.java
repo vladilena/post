@@ -57,6 +57,30 @@ public class UserDAO extends AbstractDAO {
         }
         return resultAdded;
     }
+    public Set<String> getAllEmails() {
+        Set<String> emails = new HashSet<>();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(ALL_EMAILS_FROM_USERS);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+               String email = rs.getString("email");
+               emails.add(email);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return emails;
+    }
+
+
+
 
     public Set<User> getAllUsers() {
         Set<User> users = new HashSet<>();

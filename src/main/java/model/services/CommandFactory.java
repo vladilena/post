@@ -27,14 +27,14 @@ public class CommandFactory {
         comands.put("main", new MainCommand());
         comands.put("addcategory", new CreateCategoryCommand());
         comands.put("send", new SendMailCommand());
-        comands.put("delete", new DeleteMessageCommand());
+        comands.put("delete", new DeleteMailCommand());
         comands.put("changecategory", new ChangeCategory());
-        comands.put("getmailbycategory", new GetMailByCategoryCommand());
-        comands.put("findbytitle", new FindMessageByTitleCommand());
-        comands.put("findbytag", new FindMessageByTagCommand());
+        comands.put("getmailbycategory", new FindMailByCategoryCommand());
+        comands.put("findbytitle", new FindMailByTitleCommand());
+        comands.put("findbytag", new FindMailByTagCommand());
         comands.put("reportedspam", new ReportedSpamCommand());
         comands.put("findbysenderorrecipient", new FindMailBySenderOrRecipient());
-        comands.put("findbytimeperiod", new FindMailsInTimePeriodCommand());
+        comands.put("findbytimeperiod", new FindMailInTimePeriodCommand());
 
 
     }

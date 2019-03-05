@@ -9,14 +9,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login</title>
+    <title><fmt:message key="text.title.login"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <jstl:if test="${not empty requestScope.notExists}">
-    <div class="alert alert-danger" role="alert">This user not exist</div>
+    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.duplicate.user"/></div>
+</jstl:if>
+<jstl:if test="${not empty requestScope.wrongInput}">
+    <div class="alert alert-danger" role="alert">Incorrect data. Try again</div>
 </jstl:if>
 
 <form role="form" class="form-inline" method="post" action="controller?action=login">
@@ -30,18 +34,7 @@
     </div>
     <button type="submit" class="btn btn-success">Log in</button>
 </form>
-<%--
-<form method="post" action="controller?action=login">
-    <p><label>
-        <input type="text" name="email" size="40"/>
-    </label>email</p>
-    <p><label>
-        <input type="password" name="password" size="20" />
-    </label>password</p>
-    <p><input type="submit" value="Login" /></p>
-    <p></p>
-</form>
---%>
+
 
 </body>
 </html>

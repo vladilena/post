@@ -29,26 +29,10 @@ public class MainCommand implements Command {
             CustomerCategoryDAO customerCategoryDAO = factory.getCustomerCategoryDAO();
             Set<CustomerCategory> customerCategories = customerCategoryDAO.getAllCustomerCategories(user);
 
-
             request.setAttribute("custom_categories", customerCategories);
             request.setAttribute("mails", mails);
             request.setAttribute("categories", categories);
         }
-
         return "main.jsp";
     }
-
-
-    public static void main(String[] args) {
-        DAOFactory factory = DAOFactory.getInstance();
-        CategoryDAO categoryDAO = factory.getCategoryDAO();
-        Set<Category> categories = categoryDAO.getAllCategories();
-
-        for (Category category : categories) {
-            System.out.println(category.toString());
-        }
-
-
-    }
-
 }

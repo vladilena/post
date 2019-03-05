@@ -25,8 +25,8 @@ public class MailDAO extends AbstractDAO {
     }
 
     public int sendMail(Mail mail) {
-         Connection connection = null;
-         PreparedStatement statement = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
 
         try {
             connection = getConnection();
@@ -128,11 +128,11 @@ public class MailDAO extends AbstractDAO {
         Connection connection = null;
         PreparedStatement statement = null;
         mails = new LinkedList<>();
-//2019-12-02T12:30
+        //2019-12-02T12:30
         // 2019-03-01 13:32:09
 
-        Timestamp fromStamp = Timestamp.valueOf(from.replace("T"," ")+":00");
-        Timestamp toStamp = Timestamp.valueOf(to.replace("T"," ")+":00");
+        Timestamp fromStamp = Timestamp.valueOf(from.replace("T", " ") + ":00");
+        Timestamp toStamp = Timestamp.valueOf(to.replace("T", " ") + ":00");
         try {
             connection = getConnection();
             statement = connection.prepareStatement(MAIL_IN_TIME_PERIOD);
@@ -177,16 +177,16 @@ public class MailDAO extends AbstractDAO {
         return mail;
     }
 
-    public void deleteMail(Mail mail) {
+
+    public void deleteMail(int messageId) {
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = getConnection();
             statement = connection.prepareStatement(DELETE_FROM_MAIL);
-            statement.setInt(1, mail.getId());
+            statement.setInt(1, messageId);
             statement.executeUpdate();
-            System.out.println("was been deleted");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -194,7 +194,8 @@ public class MailDAO extends AbstractDAO {
 
     }
 
-    public int changeCategory(Mail mail, String category) {
+
+    public int changeCategory(int messageId, String category) {
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -202,14 +203,12 @@ public class MailDAO extends AbstractDAO {
             connection = getConnection();
             statement = connection.prepareStatement(CHANGE_CATEGORY);
             statement.setString(1, category);
-            statement.setInt(2, mail.getId());
+            statement.setInt(2, messageId);
             resultAdded = statement.executeUpdate();
-            System.out.println("change category");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return resultAdded;
     }
 
@@ -240,8 +239,8 @@ public class MailDAO extends AbstractDAO {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(FIND_MAIL_BY_TAG);
-            statement.setString(1, "%"+tag+"%");
-            statement.setInt(2,currentUser.getId());
+            statement.setString(1, "%" + tag + "%");
+            statement.setInt(2, currentUser.getId());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 mails.add(recordFromResultSet(rs));
@@ -253,7 +252,7 @@ public class MailDAO extends AbstractDAO {
         return mails;
     }
 
-    public List<Mail> getMailBySenderOrRecipient(String email, User user){
+    public List<Mail> getMailBySenderOrRecipient(String email, User user) {
         Connection connection = null;
         PreparedStatement statement = null;
         mails = new LinkedList<>();
@@ -262,7 +261,7 @@ public class MailDAO extends AbstractDAO {
             statement = connection.prepareStatement(FIND_MAIL_BY_RECIPIENT_OR_SENDER);
             statement.setString(1, email);
             statement.setString(2, email);
-            statement.setInt(3,user.getId());
+            statement.setInt(3, user.getId());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 mails.add(recordFromResultSet(rs));

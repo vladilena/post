@@ -14,36 +14,44 @@ public class RegisterCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        Validation validation = new Validation();
 
-        String email = request.getParameter(EMAIL);
-        String password = request.getParameter(PASSWORD);
-        String firstName = request.getParameter(FIRST_NAME);
-        String lastName = request.getParameter(LAST_NAME);
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
 
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+        String resultPage = "register.jsp";
 
-        DAOFactory factory = DAOFactory.getInstance();
-        UserDAO userDAO = factory.getUserDAO();
-        Set<User> users = userDAO.getAllUsers();
-        int add = 0;
-
-        if (!users.contains(user)) {
-            add = userDAO.addUser(user);
-            System.out.println(add + " size " + userDAO.getAllUsers().size());
-        }
-
-        if (add == 0) {
-            request.setAttribute("notAdd", "This user exists");
+        if(!validation.isLoginValid(email)){
+            request.setAttribute("invalidlogin", "Wrong email format. Try again");
+        }else if(!validation.isPasswordValid(password)){
+            request.setAttribute("invalidPassword", "Wrong password format. Try again");
+        }else if(!validation.isNameValid(firstName)){
+            request.setAttribute("invalidFirstName", "Wrong first name format. Try again");
+        }else if (!validation.isNameValid(lastName)){
+            request.setAttribute("invalidLastName", "Wrong last name format. Try again");
         } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-        }
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
 
-        String result = (add == 0) ? "register.jsp" : "controller?action=main";
-        return result;
+            DAOFactory factory = DAOFactory.getInstance();
+            UserDAO userDAO = factory.getUserDAO();
+
+            Set<String> emails = userDAO.getAllEmails();
+
+            if(!emails.contains(email)){
+                userDAO.addUser(user);
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                resultPage = "controller?action=main";
+            }else {
+                request.setAttribute("notAdd", "User with this email is already exists");
+            }
+        }
+        return resultPage;
     }
 }

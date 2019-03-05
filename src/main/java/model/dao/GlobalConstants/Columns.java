@@ -16,6 +16,4 @@ public interface Columns {
     String TAGS = "tags";
     String MESSAGE = "message";
     String RELATED_USER = "related_user";
-
-
 }
