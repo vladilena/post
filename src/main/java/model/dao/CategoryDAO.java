@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static model.dao.GlobalConstants.Columns.CATEGORY;
-import static model.dao.GlobalConstants.Columns.ID;
-import static model.dao.GlobalConstants.Statements.*;
+import static model.dao.DAOConstants.Columns.*;
+import static model.dao.DAOConstants.Statements.*;
 
 public class CategoryDAO extends AbstractDAO {
     private static CategoryDAO instance;
@@ -37,11 +36,13 @@ public class CategoryDAO extends AbstractDAO {
             while (rs.next()) {
                 int id = rs.getInt(ID);
                 String categoryName = rs.getString(CATEGORY);
+                String uaCategoryName = rs.getString(UA_CATEGORY);
 
                 Category newCategory = new Category();
 
                 newCategory.setId(id);
                 newCategory.setCategoryName(categoryName);
+                newCategory.setUaCategoryName(uaCategoryName);
                 categories.add(newCategory);
             }
         } catch (SQLException e) {
@@ -50,25 +51,4 @@ public class CategoryDAO extends AbstractDAO {
         return categories;
     }
 
-    public int getCategoryIdByName(String categoryName) {
-        int categoryId = 0;
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = getConnection();
-            System.out.println("connection in CategoryDAO.getCategoryIDByName");
-            statement = connection.prepareStatement(FIND_CATEGORY_BY_ID);
-
-            statement.setString(1, categoryName);
-
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                categoryId = rs.getInt(ID);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return categoryId;
-    }
 }

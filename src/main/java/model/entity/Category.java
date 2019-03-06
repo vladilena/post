@@ -5,6 +5,15 @@ import java.util.Objects;
 public class Category {
     private int id;
     private String categoryName;
+    private String uaCategoryName;
+
+    public String getUaCategoryName() {
+        return uaCategoryName;
+    }
+
+    public void setUaCategoryName(String uaCategoryName) {
+        this.uaCategoryName = uaCategoryName;
+    }
 
     public int getId() {
         return id;
@@ -35,11 +44,4 @@ public class Category {
         return Objects.hash(getCategoryName());
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", categoryName='" + categoryName + '\'' +
-                '}';
-    }
 }

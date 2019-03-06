@@ -1,7 +1,7 @@
 package controller;
 
-import model.services.Command;
-import model.services.CommandFactory;
+import model.services.command.Command;
+import model.services.command.CommandFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,6 +22,7 @@ public class MainServlet extends HttpServlet {
     }
 
     private void processUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         CommandFactory commandFactory = CommandFactory.commandFactory();
         Command command = commandFactory.getCommand(req);
         String page = command.execute(req);

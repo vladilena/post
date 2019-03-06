@@ -1,12 +1,14 @@
 package model.dao;
 
+import static model.dao.DAOConstants.DataBaseConstants.DRIVER;
+
 public class DAOFactory {
 
     private static DAOFactory factory;
 
     private DAOFactory() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

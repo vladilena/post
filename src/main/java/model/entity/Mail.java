@@ -2,6 +2,7 @@ package model.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ public class Mail {
     private String recipient;
     private Timestamp dateTime;
     private String title;
-    private String tags;
+    private ArrayList <String> tags;
     private String category;
     private String message;
     private int relatedUser;
@@ -72,11 +73,11 @@ public class Mail {
         this.title = title;
     }
 
-    public String getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(ArrayList tags) {
         this.tags = tags;
     }
 

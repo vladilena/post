@@ -5,8 +5,14 @@
   Time: 17:44
   To change this template use File | Settings | File Templates.
 --%>
+<?xml version="1.0" encoding="UTF-8" ?>
 <%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" />
 <html>
 <head>
     <title><fmt:message key="text.title.login"/></title>
@@ -16,23 +22,23 @@
 </head>
 <body>
 
-<jstl:if test="${not empty requestScope.notExists}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.duplicate.user"/></div>
-</jstl:if>
-<jstl:if test="${not empty requestScope.wrongInput}">
-    <div class="alert alert-danger" role="alert">Incorrect data. Try again</div>
-</jstl:if>
+<c:if test="${not empty requestScope.notExists}">
+    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.not.exists"/></div>
+</c:if>
+<c:if test="${not empty requestScope.wrongInput}">
+    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.input"/></div>
+</c:if>
 
 <form role="form" class="form-inline" method="post" action="controller?action=login">
     <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" name="email" id="email" placeholder="Your email">
+        <label for="email"><fmt:message key="text.email"/></label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="<fmt:message key="text.your.email"/>" required>
     </div>
     <div class="form-group">
-        <label for="pass">Password</label>
-        <input type="password" class="form-control" name="password" id="pass" placeholder="Password">
+        <label for="pass"><fmt:message key="text.password"/></label>
+        <input type="password" class="form-control" name="password" id="pass" placeholder="<fmt:message key="text.your.password"/>" required>
     </div>
-    <button type="submit" class="btn btn-success">Log in</button>
+    <button type="submit" class="btn btn-success"><fmt:message key="text.log.in"/></button>
 </form>
 
 

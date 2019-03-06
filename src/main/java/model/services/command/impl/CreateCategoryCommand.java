@@ -1,14 +1,18 @@
-package model.services;
+package model.services.command.impl;
 
 
 import model.dao.CustomerCategoryDAO;
 import model.dao.DAOFactory;
 import model.entity.CustomerCategory;
 import model.entity.User;
+import model.services.command.Command;
+import model.services.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
+
+import static model.services.command.CommandConstants.*;
 
 
 public class CreateCategoryCommand implements Command {
@@ -16,8 +20,8 @@ public class CreateCategoryCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         Validation validation = new Validation();
-        User user = (User) request.getSession().getAttribute("user");
-        String categoryName = request.getParameter("newcategory");
+        User user = (User) request.getSession().getAttribute(USER);
+        String categoryName = request.getParameter(NEW_CATEGORY);
 
         if (validation.isCategoryValid(categoryName)) {
             CustomerCategory categ = new CustomerCategory();
@@ -34,12 +38,14 @@ public class CreateCategoryCommand implements Command {
             if (!categories.contains(categ)) {
                 add = categoryDao.addCustomCategory(categ);
                 HttpSession session = request.getSession();
-                session.setAttribute("custom_categories", categories);
+                categories = categoryDao.getAllCustomerCategories(user);
+                session.setAttribute(CUSTOM_CATEGORIES_ATTRIBUTE, categories);
+                session.setAttribute(USER, user);
             } else {
-                request.setAttribute("wrongCategory", "Incorrect name for category or this category exists");
+                request.setAttribute(WRONG_CATEGORY_ATTRIBUTE, true);
             }
         } else {
-            request.setAttribute("wrongCategory", "Incorrect name for category or this category exists");
+            request.setAttribute(WRONG_CATEGORY_ATTRIBUTE, true);
         }
         return "controller?action=main";
     }

@@ -5,17 +5,16 @@ import model.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static model.dao.GlobalConstants.Columns.*;
-import static model.dao.GlobalConstants.Statements.*;
+import static model.dao.DAOConstants.Columns.*;
+import static model.dao.DAOConstants.Statements.*;
 
 
 public class MailDAO extends AbstractDAO {
     private static MailDAO instance;
-    int resultAdded;
-    List<Mail> mails;
 
     static MailDAO getInstance() {
         if (instance == null) {
@@ -27,7 +26,7 @@ public class MailDAO extends AbstractDAO {
     public int sendMail(Mail mail) {
         Connection connection = null;
         PreparedStatement statement = null;
-
+        int resultAdded = 0;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(INSERT_MAIL);
@@ -35,18 +34,17 @@ public class MailDAO extends AbstractDAO {
             statement.setString(1, mail.getSender());
             statement.setString(2, mail.getRecipient());
             statement.setString(3, mail.getTitle());
-            statement.setString(4, mail.getTags());
+            statement.setString(4, mail.getTags().toString());
             statement.setString(5, mail.getCategory());
             statement.setString(6, mail.getMessage());
             statement.setInt(7, mail.getRelatedUser());
 
             resultAdded = statement.executeUpdate();
 
-            ResultSet rs = statement.executeQuery(MAIL_MAX_ID);
-            rs.next();
-            int mailId = rs.getInt(ID);
-            mail.setId(mailId);
-
+//            ResultSet rs = statement.executeQuery(MAIL_MAX_ID);
+//            rs.next();
+//            int mailId = rs.getInt(ID);
+//            mail.setId(mailId);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,9 +53,10 @@ public class MailDAO extends AbstractDAO {
     }
 
     public List<Mail> getAllMails(User user) {
+        List<Mail> mails = new LinkedList<>();
         Connection connection = null;
         PreparedStatement statement = null;
-        mails = new LinkedList<>();
+
         int userId = user.getId();
         try {
             connection = getConnection();
@@ -79,8 +78,7 @@ public class MailDAO extends AbstractDAO {
     public List<Mail> getAllMailsWithoutParams() {
         Connection connection = null;
         PreparedStatement statement = null;
-        mails = new LinkedList<>();
-
+        List<Mail> mails = new LinkedList<>();
 
         try {
             connection = getConnection();
@@ -100,8 +98,7 @@ public class MailDAO extends AbstractDAO {
     public List<Mail> getMailByCategory(String category, User user) {
         Connection connection = null;
         PreparedStatement statement = null;
-
-        mails = new LinkedList<>();
+        List<Mail> mails = new LinkedList<>();
 
 
         try {
@@ -116,8 +113,6 @@ public class MailDAO extends AbstractDAO {
             while (rs.next()) {
                 mails.add(recordFromResultSet(rs));
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,7 +122,7 @@ public class MailDAO extends AbstractDAO {
     public List<Mail> getMailByTimePeriod(String from, String to, User user) {
         Connection connection = null;
         PreparedStatement statement = null;
-        mails = new LinkedList<>();
+        List<Mail> mails = new LinkedList<>();
         //2019-12-02T12:30
         // 2019-03-01 13:32:09
 
@@ -152,6 +147,22 @@ public class MailDAO extends AbstractDAO {
         return mails;
     }
 
+    public void deleteMail(int messageId) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(DELETE_FROM_MAIL);
+            statement.setInt(1, messageId);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private Mail recordFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt(ID);
         String sender = rs.getString(SENDER);
@@ -169,7 +180,7 @@ public class MailDAO extends AbstractDAO {
         mail.setRecipient(recipient);
         mail.setDateTime(dateTime);
         mail.setTitle(title);
-        mail.setTags(tags);
+        mail.setTags(new ArrayList<>(Arrays.asList(tags.split("\\s*,\\s*"))));
         mail.setCategory(category);
         mail.setMessage(message);
         mail.setRelatedUser(relatedUser);
@@ -178,27 +189,10 @@ public class MailDAO extends AbstractDAO {
     }
 
 
-    public void deleteMail(int messageId) {
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-        try {
-            connection = getConnection();
-            statement = connection.prepareStatement(DELETE_FROM_MAIL);
-            statement.setInt(1, messageId);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
     public int changeCategory(int messageId, String category) {
         Connection connection = null;
         PreparedStatement statement = null;
-
+        int resultAdded = 0;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(CHANGE_CATEGORY);
@@ -215,7 +209,7 @@ public class MailDAO extends AbstractDAO {
     public List<Mail> getMailByTitle(String title, User user) {
         Connection connection = null;
         PreparedStatement statement = null;
-        mails = new ArrayList<>();
+        List<Mail> mails = new LinkedList<>();
         try {
             connection = getConnection();
             statement = connection.prepareStatement(GET_MAIL_BY_TITLE);
@@ -235,7 +229,7 @@ public class MailDAO extends AbstractDAO {
     public List<Mail> getMailByTag(String tag, User currentUser) {
         Connection connection = null;
         PreparedStatement statement = null;
-        mails = new LinkedList<>();
+        List<Mail> mails = new LinkedList<>();
         try {
             connection = getConnection();
             statement = connection.prepareStatement(FIND_MAIL_BY_TAG);
@@ -255,7 +249,7 @@ public class MailDAO extends AbstractDAO {
     public List<Mail> getMailBySenderOrRecipient(String email, User user) {
         Connection connection = null;
         PreparedStatement statement = null;
-        mails = new LinkedList<>();
+        List<Mail> mails = new LinkedList<>();
         try {
             connection = getConnection();
             statement = connection.prepareStatement(FIND_MAIL_BY_RECIPIENT_OR_SENDER);

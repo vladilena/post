@@ -1,6 +1,5 @@
 package model.dao;
 
-import model.entity.Category;
 import model.entity.CustomerCategory;
 import model.entity.User;
 
@@ -11,8 +10,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static model.dao.GlobalConstants.Columns.*;
-import static model.dao.GlobalConstants.Statements.*;
+import static model.dao.DAOConstants.Columns.*;
+import static model.dao.DAOConstants.Statements.*;
 
 public class CustomerCategoryDAO extends AbstractDAO {
     private static CustomerCategoryDAO instance;
@@ -37,12 +36,6 @@ public class CustomerCategoryDAO extends AbstractDAO {
             statement.setInt(2, category.getUserId());
 
             resultAdded = statement.executeUpdate();
-
-// инкремент
-            ResultSet rs = statement.executeQuery(CATEGORY_MAX_ID);
-            rs.next();
-            int categoryId = rs.getInt(ID);
-            category.setId(categoryId);
 
 
         } catch (SQLException e) {

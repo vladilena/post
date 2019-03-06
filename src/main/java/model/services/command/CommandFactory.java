@@ -1,4 +1,6 @@
-package model.services;
+package model.services.command;
+
+import model.services.command.impl.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -28,7 +30,7 @@ public class CommandFactory {
         comands.put("addcategory", new CreateCategoryCommand());
         comands.put("send", new SendMailCommand());
         comands.put("delete", new DeleteMailCommand());
-        comands.put("changecategory", new ChangeCategory());
+        comands.put("changecategory", new ChangeCategoryCommand());
         comands.put("getmailbycategory", new FindMailByCategoryCommand());
         comands.put("findbytitle", new FindMailByTitleCommand());
         comands.put("findbytag", new FindMailByTagCommand());

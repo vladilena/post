@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static model.dao.GlobalConstants.Statements.*;
-import static model.dao.GlobalConstants.Columns.*;
+import static model.dao.DAOConstants.Statements.*;
+import static model.dao.DAOConstants.Columns.*;
 
 public class UserDAO extends AbstractDAO {
     private static UserDAO instance;
@@ -45,18 +45,13 @@ public class UserDAO extends AbstractDAO {
 
             resultAdded = statement.executeUpdate();
 
-// инкремент
-            ResultSet rs = statement.executeQuery(USERS_MAX_ID);
-            rs.next();
-            int userId = rs.getInt(ID);
-            user.setId(userId);
-
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return resultAdded;
     }
+
     public Set<String> getAllEmails() {
         Set<String> emails = new HashSet<>();
 
@@ -70,16 +65,14 @@ public class UserDAO extends AbstractDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-               String email = rs.getString("email");
-               emails.add(email);
+                String email = rs.getString(EMAIL);
+                emails.add(email);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return emails;
     }
-
-
 
 
     public Set<User> getAllUsers() {
@@ -124,7 +117,6 @@ public class UserDAO extends AbstractDAO {
 
         try {
             connection = getConnection();
-            System.out.println("Получили коннекшн в юзердао");
             statement = connection.prepareStatement(SELECT_USER_ON_PASSWORD_EMAIL);
 
             statement.setString(1, email);
@@ -147,7 +139,6 @@ public class UserDAO extends AbstractDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("ERROR DRIVER");
         }
         return user;
     }

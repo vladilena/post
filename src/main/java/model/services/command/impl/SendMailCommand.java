@@ -1,44 +1,51 @@
-package model.services;
+package model.services.command.impl;
+
 
 import model.dao.DAOFactory;
 import model.dao.MailDAO;
 import model.entity.Mail;
 import model.entity.User;
+import model.services.command.Command;
+import model.services.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static model.services.command.CommandConstants.*;
 
 public class SendMailCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        Validation validation = new Validation();
-        User user = (User) request.getSession().getAttribute("user");
+       Validation validation = new Validation();
+        User user = (User) request.getSession().getAttribute(USER);
         String resultPage = "sendmail.jsp";
 
         String sender = user.getEmail();
-        String recipient = request.getParameter("recipient");
-        String title = request.getParameter("title");
-        String tags = request.getParameter("tags");
-        String message = request.getParameter("message");
+        String recipient = request.getParameter(RECIPIENT);
+        String title = request.getParameter(TITLE);
+        String tags = request.getParameter(TAGS);
+        String message = request.getParameter(MESSAGE);
         int relatedUser = user.getId();
 
         if (!validation.isRecipientEmailValid(recipient)) {
-            request.setAttribute("invalidRecipient", "Incorrect recipient data. Try again");
+            request.setAttribute(INVALID_RECIPIENT_ATTRIBUTE, true);
         } else if (!validation.isTitleValid(title)) {
-            request.setAttribute("invalidTitle", "Incorrect title. Try again");
+            request.setAttribute(INVALID_TITLE_ATTRIBUTE, true);
         } else if (!validation.isTagsValid(tags)) {
-            request.setAttribute("invalidTags", "Incorrect tags. Try again");
+            request.setAttribute(INVALID_TAGS_ATTRIBUTE, true);
         } else if (!validation.isMessageValid(message)) {
-            request.setAttribute("invalidMessage", "Incorrect message. Try again");
+            request.setAttribute(INVALID_MESSAGE_ATTRIBUTE, true);
         }else {
             Mail mail = new Mail();
 
             mail.setSender(sender);
             mail.setRecipient(recipient);
             mail.setTitle(title);
-            mail.setTags(tags);
-            mail.setCategory("outgoing");
+            mail.setTags(new ArrayList<>(Arrays.asList(tags.split("\\s*,\\s*"))));
+            mail.setCategory(OUTGOING);
             mail.setMessage(message);
             mail.setRelatedUser(relatedUser);
 
@@ -49,7 +56,7 @@ public class SendMailCommand implements Command {
             if (!mails.contains(mail)) {
                 int add = mailDAO.sendMail(mail);}
             else {
-                request.setAttribute("problem", "Message hasn't been send. Try later");
+                request.setAttribute(PROBLEM_ATTRIBUTE, true);
             }
             resultPage = "successful.jsp";
         }
