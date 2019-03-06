@@ -1,7 +1,7 @@
 package model.services.command.impl;
 
-import model.dao.DAOFactory;
-import model.dao.UserDAO;
+import model.dao.impl.DAOFactory;
+import model.dao.impl.UserDAO;
 import model.entity.User;
 import model.services.command.Command;
 import model.services.validation.Validation;

@@ -11,9 +11,9 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="language" value="${pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="text" />
+<c:set var="language" value="${pageContext.request.locale}" scope="session"/>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="text"/>
 
 <html>
 <head>
@@ -41,26 +41,36 @@
 <c:if test="${not empty requestScope.problem}">
     <div class="alert alert-danger" role="alert"><fmt:message key="text.problem.with.sending"/></div>
 </c:if>
-
-<form role="form" method="post" action="controller?action=send">
-    <div class="form-group">
-        <label for="recipient"><fmt:message key="text.recipient"/></label>
-        <input type="email" class="form-control" name="recipient" id="recipient" placeholder="<fmt:message key="text.input.recipient"/>" required>
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <br/>
+        <br/>
+        <form role="form" method="post" action="controller?action=send">
+            <div class="form-group">
+                <label for="recipient"><fmt:message key="text.recipient"/></label>
+                <input type="email" class="form-control" name="recipient" id="recipient"
+                       placeholder="<fmt:message key="text.input.recipient"/>" required>
+            </div>
+            <div class="form-group">
+                <label for="title"><fmt:message key="text.title"/></label>
+                <input type="text" class="form-control" name="title" id="title"
+                       placeholder="<fmt:message key="text.input.title"/>" required>
+            </div>
+            <div class="form-group">
+                <label for="tags"><fmt:message key="text.tags"/></label>
+                <input type="text" class="form-control" name="tags" id="tags"
+                       placeholder="<fmt:message key="text.input.tags"/>" required>
+            </div>
+            <div class="form-group">
+                <label for="message"><fmt:message key="text.message"/></label>
+                <input type="text" class="form-control" name="message" id="message"
+                       placeholder="<fmt:message key="text.input.message"/>" required>
+            </div>
+            <button type="submit" class="btn btn-success"><fmt:message key="text.send"/></button>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="title"><fmt:message key="text.title"/></label>
-        <input type="text" class="form-control" name="title" id="title" placeholder="<fmt:message key="text.input.title"/>" required>
-    </div>
-    <div class="form-group">
-        <label for="tags"><fmt:message key="text.tags"/></label>
-        <input type="text" class="form-control" name="tags" id="tags" placeholder="<fmt:message key="text.input.tags"/>" required>
-    </div>
-    <div class="form-group">
-        <label for="message"><fmt:message key="text.message"/></label>
-        <input type="text" class="form-control" name="message" id="message" placeholder="<fmt:message key="text.input.message"/>" required>
-    </div>
-    <button type="submit" class="btn btn-success"><fmt:message key="text.send"/></button>
-</form>
-
+    <div class="col-3"></div>
+</div>
 </body>
 </html>

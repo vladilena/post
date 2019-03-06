@@ -1,9 +1,10 @@
-package model.dao;
+package model.dao.impl;
 
 import model.entity.Mail;
 import model.entity.User;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -15,6 +16,9 @@ import static model.dao.DAOConstants.Statements.*;
 
 public class MailDAO extends AbstractDAO {
     private static MailDAO instance;
+
+    private MailDAO() {
+    }
 
     static MailDAO getInstance() {
         if (instance == null) {
@@ -37,14 +41,10 @@ public class MailDAO extends AbstractDAO {
             statement.setString(4, mail.getTags().toString());
             statement.setString(5, mail.getCategory());
             statement.setString(6, mail.getMessage());
-            statement.setInt(7, mail.getRelatedUser());
+            statement.setInt(7, mail.getRelatedUser().getId());
 
             resultAdded = statement.executeUpdate();
 
-//            ResultSet rs = statement.executeQuery(MAIL_MAX_ID);
-//            rs.next();
-//            int mailId = rs.getInt(ID);
-//            mail.setId(mailId);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,6 +164,10 @@ public class MailDAO extends AbstractDAO {
     }
 
     private Mail recordFromResultSet(ResultSet rs) throws SQLException {
+        DAOFactory factory = DAOFactory.getInstance();
+        UserDAO userDAO = factory.getUserDAO();
+        CategoryDAO categoryDAO = factory.getCategoryDAO();
+
         int id = rs.getInt(ID);
         String sender = rs.getString(SENDER);
         String recipient = rs.getString(RECIPIENT);
@@ -172,13 +176,15 @@ public class MailDAO extends AbstractDAO {
         String tags = rs.getString(TAGS);
         String category = rs.getString(CATEGORY);
         String message = rs.getString(MESSAGE);
-        int relatedUser = rs.getInt(RELATED_USER);
+        int relatedUserId = rs.getInt(RELATED_USER);
+        User relatedUser = userDAO.getUserById(relatedUserId);
 
         Mail mail = new Mail();
         mail.setId(id);
         mail.setSender(sender);
         mail.setRecipient(recipient);
-        mail.setDateTime(dateTime);
+        //2019-03-06T09:59:43.905
+        mail.setDateTime(LocalDateTime.parse((dateTime.toString()).replace(" ", "T")));
         mail.setTitle(title);
         mail.setTags(new ArrayList<>(Arrays.asList(tags.split("\\s*,\\s*"))));
         mail.setCategory(category);

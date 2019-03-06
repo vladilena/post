@@ -21,9 +21,14 @@
     <title><fmt:message key="text.title.successful"/></title>
 </head>
 <body>
-<p class="text-center"><fmt:message key="text.message.sent"/></p>
+<br/>
+<br/>
 <div class="menu-bar">
     <a class="btn btn-info" href="controller?action=main" role="button"><fmt:message key="text.main.page"/></a>
 </div>
+
+<br/>
+<br/>
+<p class="text-center"><fmt:message key="text.message.sent"/></p>
 </body>
 </html>

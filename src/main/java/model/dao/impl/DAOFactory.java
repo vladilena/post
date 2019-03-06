@@ -1,8 +1,8 @@
-package model.dao;
+package model.dao.impl;
 
 import static model.dao.DAOConstants.DataBaseConstants.DRIVER;
 
-public class DAOFactory {
+public class DAOFactory{
 
     private static DAOFactory factory;
 

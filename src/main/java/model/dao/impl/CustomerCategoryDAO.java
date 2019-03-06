@@ -1,4 +1,4 @@
-package model.dao;
+package model.dao.impl;
 
 import model.entity.CustomerCategory;
 import model.entity.User;
@@ -15,6 +15,9 @@ import static model.dao.DAOConstants.Statements.*;
 
 public class CustomerCategoryDAO extends AbstractDAO {
     private static CustomerCategoryDAO instance;
+
+    private CustomerCategoryDAO() {
+    }
 
     public static CustomerCategoryDAO getInstance() {
         if (instance == null) {
@@ -72,7 +75,31 @@ public class CustomerCategoryDAO extends AbstractDAO {
         }
         return categories;
     }
+    public CustomerCategory getCustomerCategoryById(int categoryId) {
+        CustomerCategory category = new CustomerCategory();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(CUSTOMER_CATEGORY_BY_ID);
+            statement.setInt(1, categoryId);
+            ResultSet rs = statement.executeQuery();
 
+            while (rs.next()) {
+                int id = rs.getInt(ID);
+                String categoryName = rs.getString(CATEGORY);
+                int userId = rs.getInt(USER_ID);
+
+               category.setId(id);
+               category.setCategoryName(categoryName);
+               category.setUserId(userId);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
 }
 
 

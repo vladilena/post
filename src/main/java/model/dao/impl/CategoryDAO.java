@@ -1,4 +1,4 @@
-package model.dao;
+package model.dao.impl;
 
 import model.entity.Category;
 
@@ -15,6 +15,8 @@ import static model.dao.DAOConstants.Statements.*;
 public class CategoryDAO extends AbstractDAO {
     private static CategoryDAO instance;
 
+    private CategoryDAO() {
+    }
 
     public static CategoryDAO getInstance() {
         if (instance == null) {
@@ -25,7 +27,7 @@ public class CategoryDAO extends AbstractDAO {
 
 
     public Set<Category> getAllCategories() {
-        Set<Category>categories = new HashSet<>();
+        Set<Category> categories = new HashSet<>();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -51,4 +53,27 @@ public class CategoryDAO extends AbstractDAO {
         return categories;
     }
 
+    public Category getCategoryById(int categoryId) {
+        Category category = new Category();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(CATEGORY_BY_ID);
+            statement.setInt(1,categoryId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(ID);
+                String categoryName = rs.getString(CATEGORY);
+                String uaCategoryName = rs.getString(UA_CATEGORY);
+
+                category.setId(id);
+                category.setCategoryName(categoryName);
+                category.setUaCategoryName(uaCategoryName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
 }

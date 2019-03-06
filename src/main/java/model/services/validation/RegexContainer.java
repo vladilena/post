@@ -8,6 +8,6 @@ public interface RegexContainer {
     String REGEX_CATEGORY = "[A-Za-zА-Яа-яЁёІіЇїЄє'0-9_]{2,20}";
     String REGEX_TITLE = "[A-Za-zА-Яа-яЁёІіЇїЄє'\\s_\\-\\.\\!]{2,50}";
     String REGEX_TAGS = "[A-Za-zА-Яа-яЁёІіЇїЄє\\s\\,]{2,50}";
-    String REGEX_MESSAGE = "[A-Za-zА-Яа-яЁёІіЇїЄє'\\s_\\-\\.\\,\\!\\n]{1,1000}";
+    String REGEX_MESSAGE = "[A-Za-zА-Яа-яЁёІіЇїЄє'\\s_\\-\\.\\,\\!\\?\\:\\;\\&\\#\\'\\n]{1,1000}";
     String REGEX_DATETIME = "^(\\d{4})-(\\d\\d)-(\\d\\d)T(\\d\\d):(\\d\\d)$";
 }

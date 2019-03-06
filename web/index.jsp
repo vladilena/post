@@ -10,9 +10,11 @@
 <%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="language" value="${pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="text" />
+<%--<%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>--%>
+
+<c:set var="language" value="${pageContext.request.locale}" scope="session"/>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="text"/>
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -22,131 +24,16 @@
             crossorigin="anonymous"></script>
     <title><fmt:message key="text.title.main"/></title>
 </head>
+
 <body>
-
-<c:choose>
-<c:when test="${not empty sessionScope.user}">
-
-<p class="text-center"><fmt:message key="text.hello"/> ${sessionScope.user.firstName} ${sessionScope.user.lastName}</p>
-
-<div class="menu-bar">
-    <a class="btn btn-info" href="controller?action=send" role="button"><fmt:message key="text.send.email"/></a>
-    <a class="btn btn-info" href="controller?action=logout" role="button"><fmt:message key="text.logout"/></a></div>
-<br/>
-<br/>
-
-<div class="menu-bar">
-    <c:forEach items="${requestScope.categories}" var="category">
-        <form role="form" class="btn btn-success btn-sm" method="post" action="controller?action=getmailbycategory">
-            <button type="submit" class="btn btn-success btn-sm" name="categoryName"
-                    value="${category.categoryName}">${category.categoryName}</button>
-        </form>
-    </c:forEach>
-</div>
-<div class="menu-bar">
-    <c:forEach items="${requestScope.custom_categories}" var="custom_category">
-    <form role="form" class="btn btn-success btn-sm" method="post" action="controller?action=getmailbycategory">
-        <button type="submit" class="btn btn-success btn-sm" name="categoryName"
-                value="${custom_category.categoryName}">${custom_category.categoryName}</button>
-    </form>
-    </c:forEach>
-
-
-    <c:if test="${not empty requestScope.wrongCategory}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.category.input"/></div>
-    </c:if>
-
-
-    <form role="form" method="post" action="controller?action=addcategory">
-        <div class="form-inline">
-            <input type="text" class="form-control" name="newcategory" placeholder="<fmt:message key="text.category.name"/>">
-            <button type="submit" class="btn btn-info btn-sm"><fmt:message key="text.add.new.category"/></button>
+        <div class="row">
+            <div class="col-md text-center">
+                <div class="menu-bar">
+                    <br/>
+                    <br/>
+                    <a class="btn btn-info" href="register.jsp" role="button"><fmt:message key="text.registration"/></a>
+                    <a class="btn btn-info" href="login.jsp" role="button"><fmt:message key="text.log.in"/></a></div>
+            </div>
         </div>
-    </form>
-
-    <hr/>
-    <form role="form" method="post" action="controller?action=findbytitle">
-        <div class="form-group">
-            <label for="title" class="h5"><fmt:message key="text.find.mail.by.title"/></label>
-            <input type="text" class="form-control" name="title" id="title" placeholder="<fmt:message key="text.input.title.for.search"/>">
-        </div>
-        <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.find"/></button>
-    </form>
-
-    <hr/>
-    <form role="form" method="post" action="controller?action=findbytag">
-        <div class="form-group">
-            <label for="tag" class="h5"><fmt:message key="text.find.mail.by.tag"/></label>
-            <input type="text" class="form-control" name="tag" id="tag" placeholder="<fmt:message key="text.input.tag.for.search"/>">
-        </div>
-        <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.find"/></button>
-    </form>
-
-    <hr/>
-    <form role="form" method="post" action="controller?action=findbysenderorrecipient">
-        <div class="form-group">
-            <label for="email" class="h5"><fmt:message key="text.find.mail.by.recipient"/></label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="<fmt:message key="text.input.email.for.search"/>">
-        </div>
-        <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.find"/></button>
-    </form>
-
-    <hr/>
-    <div class="h5"> <fmt:message key="text.find.mail.by.time"/></div>
-    <form role="form" method="post" action="controller?action=findbytimeperiod">
-        <div class="form-inline">
-            <label for="start" class="h7"><fmt:message key="text.input.start"/></label>
-            <input type="datetime-local" class="form-control" name="start" id="start">
-            <label for="finish" class="h7"><fmt:message key="text.input.finish"/></label>
-            <input type="datetime-local" class="form-control" name="finish" id="finish">
-        </div>
-        <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.find"/></button>
-    </form>
-
-    <hr/>
-    <div class="h3"><fmt:message key="text.your.mail"/></div>
-    <hr/>
-    <c:forEach items="${requestScope.mails}" var="mail">
-    <ul class="menu">
-        <li><b><fmt:message key="text.sender.data"/></b> ${mail.sender}</li>
-        <li><b><fmt:message key="text.recipient.data"/></b> ${mail.recipient}</li>
-        <li><b><fmt:message key="text.time.data"/></b> ${mail.dateTime}</li>
-        <li><b><fmt:message key="text.title.data"/></b> ${mail.title}</li>
-        <li><b><fmt:message key="text.tags.data"/></b>${mail.tags}</li>
-        <li><b><fmt:message key="text.category.data"/></b> ${mail.category}</li>
-        <li><b><fmt:message key="text.message.data"/></b> ${mail.message}</li>
-    </ul>
-
-    <div class="menu-bar">
-
-        <form role="form" class="btn btn-success btn-sm" method="post" action="controller?action=delete">
-            <input type="hidden" name="id" value="${mail.id}">
-            <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.delete.message"/></button>
-        </form>
-        <form role="form" class="btn btn-success btn-sm" method="post" action="controller?action=reportedspam">
-            <input type="hidden" name="id" value="${mail.id}">
-            <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.report.spam"/></button>
-        </form>
-        <form role="form" class="btn btn-success btn-sm" method="post" action="controller?action=changecategory">
-            <input type="hidden" name="id" value="${mail.id}">
-            <select class="form-control" name="categoryForChange">
-                <c:forEach items="${requestScope.custom_categories}" var="custom_category">
-                    <option value="${custom_category.categoryName}">${custom_category.categoryName}</option>
-                </c:forEach>
-            </select>
-            <button type="submit" class="btn btn-success btn-sm"><fmt:message key="text.change.category"/></button>
-        </form>
-    </div>
-    </c:forEach>
-
-    </c:when>
-    <c:otherwise>
-    <div class="menu-bar">
-        <a class="btn btn-info" href="register.jsp" role="button"><fmt:message key="text.registration"/></a>
-        <a class="btn btn-info" href="login.jsp" role="button"><fmt:message key="text.log.in"/></a></div>
-    </c:otherwise>
-    </c:choose>
-
 </body>
 </html>
-

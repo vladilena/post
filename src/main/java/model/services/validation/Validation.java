@@ -16,6 +16,7 @@ public class Validation {
     }
 
     public boolean isNameValid(String name) {
+        if (name==null){return false;}
         Pattern p = Pattern.compile(REGEX_NAME, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         Matcher m = p.matcher(name);
         return (m.matches());

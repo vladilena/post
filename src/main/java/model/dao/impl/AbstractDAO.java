@@ -1,4 +1,6 @@
-package model.dao;
+package model.dao.impl;
+
+import model.dao.InterfaceDAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

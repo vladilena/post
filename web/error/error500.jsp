@@ -9,6 +9,11 @@
     <title><fmt:message key="text.title.error"/> 500</title>
 </head>
 <body>
-<h2 class="uppercase"><fmt:message key="text.error"/> 500</h2>
+<div class="row">
+    <div class="col-md text-center">
+        <br/>
+        <br/>
+        <h2 class="uppercase"><fmt:message key="text.error"/> 500</h2>
+    </div>
 </body>
 </html>

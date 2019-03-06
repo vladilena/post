@@ -1,12 +1,12 @@
-package model.services.command;
+package model.services.command.impl;
 
-import model.dao.DAOFactory;
-import model.dao.UserDAO;
+import model.dao.impl.DAOFactory;
+import model.dao.impl.UserDAO;
 import model.entity.User;
+import model.services.command.Command;
 import model.services.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Set;
 
 import static model.services.command.CommandConstants.*;
@@ -17,13 +17,11 @@ public class RegisterCommand implements Command {
         @Override
         public String execute(HttpServletRequest request) {
             Validation validation = new Validation();
-
+            String resultPage = "register.jsp";
             String email = request.getParameter(EMAIL);
             String password = request.getParameter(PASSWORD);
             String firstName = request.getParameter(FIRST_NAME);
             String lastName = request.getParameter(LAST_NAME);
-
-            String resultPage = "register.jsp";
 
             if(!validation.isLoginValid(email)){
                 request.setAttribute(INVALID_LOGIN_ATTRIBUTE, true);
@@ -47,9 +45,8 @@ public class RegisterCommand implements Command {
 
                 if(!emails.contains(email)){
                     userDAO.addUser(user);
-                    HttpSession session = request.getSession();
-                  //  session.setAttribute(USER, user);
                     resultPage = "controller?action=main";
+                    request.setAttribute(SUCCESS_REGISTRATION_ATTRIBUTE,true);
                 }else {
                     request.setAttribute(NOT_ADD_ATTRIBUTE, true);
                 }

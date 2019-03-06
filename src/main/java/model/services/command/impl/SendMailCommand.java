@@ -1,8 +1,8 @@
 package model.services.command.impl;
 
 
-import model.dao.DAOFactory;
-import model.dao.MailDAO;
+import model.dao.impl.DAOFactory;
+import model.dao.impl.MailDAO;
 import model.entity.Mail;
 import model.entity.User;
 import model.services.command.Command;
@@ -28,7 +28,6 @@ public class SendMailCommand implements Command {
         String title = request.getParameter(TITLE);
         String tags = request.getParameter(TAGS);
         String message = request.getParameter(MESSAGE);
-        int relatedUser = user.getId();
 
         if (!validation.isRecipientEmailValid(recipient)) {
             request.setAttribute(INVALID_RECIPIENT_ATTRIBUTE, true);
@@ -47,7 +46,7 @@ public class SendMailCommand implements Command {
             mail.setTags(new ArrayList<>(Arrays.asList(tags.split("\\s*,\\s*"))));
             mail.setCategory(OUTGOING);
             mail.setMessage(message);
-            mail.setRelatedUser(relatedUser);
+            mail.setRelatedUser(user);
 
             DAOFactory factory = DAOFactory.getInstance();
             MailDAO mailDAO = factory.getMailDAO();

@@ -1,7 +1,7 @@
 package model.services.command.impl;
 
-import model.dao.DAOFactory;
-import model.dao.MailDAO;
+import model.dao.impl.DAOFactory;
+import model.dao.impl.MailDAO;
 import model.entity.Mail;
 import model.entity.User;
 import model.services.command.Command;

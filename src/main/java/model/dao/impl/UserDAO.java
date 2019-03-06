@@ -1,4 +1,4 @@
-package model.dao;
+package model.dao.impl;
 
 import model.entity.User;
 
@@ -18,7 +18,6 @@ public class UserDAO extends AbstractDAO {
     private Set<User> allUsers;
 
     private UserDAO() {
-        allUsers = new HashSet<User>();
     }
 
     public static UserDAO getInstance() {
@@ -126,6 +125,40 @@ public class UserDAO extends AbstractDAO {
 
             if (rs.next()) {
                 int id = rs.getInt(ID);
+                String firstName = rs.getString(FIRST_NAME);
+                String lastName = rs.getString(LAST_NAME);
+
+                user = new User();
+                user.setId(id);
+                user.setEmail(email);
+                user.setFirstName(firstName);
+                user.setPassword(password);
+                user.setLastName(lastName);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    public User getUserById(int userId) {
+        User user = null;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(USER_BY_ID);
+
+            statement.setInt(1, userId);
+
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt(ID);
+                String email = rs.getString(EMAIL);
+                String password = rs.getString(PASSWORD);
                 String firstName = rs.getString(FIRST_NAME);
                 String lastName = rs.getString(LAST_NAME);
 

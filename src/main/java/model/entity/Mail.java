@@ -10,27 +10,27 @@ public class Mail {
     private int id;
     private String sender;
     private String recipient;
-    private Timestamp dateTime;
+    private LocalDateTime dateTime;
     private String title;
     private ArrayList <String> tags;
     private String category;
+    //private Category category;
     private String message;
-    private int relatedUser;
+    private User relatedUser;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mail mail = (Mail) o;
-        return Objects.equals(title, mail.title) &&
-                Objects.equals(tags, mail.tags) &&
-                category.equals(mail.category) &&
+        return sender.equals(mail.sender) &&
+                recipient.equals(mail.recipient) &&
                 message.equals(mail.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, tags, category, message);
+        return Objects.hash(sender, recipient, message);
     }
 
     public int getId() {
@@ -57,13 +57,15 @@ public class Mail {
         this.recipient = recipient;
     }
 
-    public Timestamp getDateTime() {
+
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Timestamp dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
+
 
     public String getTitle() {
         return title;
@@ -77,7 +79,7 @@ public class Mail {
         return tags;
     }
 
-    public void setTags(ArrayList tags) {
+    public void setTags(ArrayList <String> tags) {
         this.tags = tags;
     }
 
@@ -97,11 +99,20 @@ public class Mail {
         this.message = message;
     }
 
-    public int getRelatedUser() {
+    public User getRelatedUser() {
         return relatedUser;
     }
 
-    public void setRelatedUser(int relatedUser) {
+    public void setRelatedUser(User relatedUser) {
         this.relatedUser = relatedUser;
     }
+
+//    public Category getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(Category category) {
+//        this.category = category;
+//    }
+//
 }

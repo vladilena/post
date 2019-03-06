@@ -2,10 +2,11 @@ package model.entity;
 
 import java.util.Objects;
 
-public class CustomerCategory {
+public class CustomerCategory extends Category{
     private int id;
     private String categoryName;
     private int userId;
+    //private User user;
 
     public int getId() {
         return id;

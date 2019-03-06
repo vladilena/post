@@ -1,9 +1,9 @@
 package model.services.command.impl;
 
-import model.dao.CategoryDAO;
-import model.dao.CustomerCategoryDAO;
-import model.dao.DAOFactory;
-import model.dao.MailDAO;
+import model.dao.impl.CategoryDAO;
+import model.dao.impl.CustomerCategoryDAO;
+import model.dao.impl.DAOFactory;
+import model.dao.impl.MailDAO;
 import model.entity.Category;
 import model.entity.CustomerCategory;
 import model.entity.Mail;

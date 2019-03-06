@@ -21,6 +21,7 @@ public interface CommandConstants {
     String FINISH = "finish";
     String PASSWORD = "password";
     String NOT_EXISTS_ATTRIBUTE = "notExists";
+    String SUCCESS_REGISTRATION_ATTRIBUTE = "successRegistration";
     String NOT_ADD_ATTRIBUTE = "notAdd";
     String INVALID_LOGIN_ATTRIBUTE = "invalidlogin";
     String INVALID_PASSWORD_ATTRIBUTE = "invalidPassword";
