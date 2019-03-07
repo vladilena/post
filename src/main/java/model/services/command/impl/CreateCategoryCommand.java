@@ -27,7 +27,7 @@ public class CreateCategoryCommand implements Command {
             CustomerCategory categ = new CustomerCategory();
 
             categ.setCategoryName(categoryName);
-            categ.setUserId(user.getId());
+            categ.setUser(user);
 
             DAOFactory factory = DAOFactory.getInstance();
             CustomerCategoryDAO categoryDao = factory.getCustomerCategoryDAO();

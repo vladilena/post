@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static model.services.command.CommandConstants.*;
-import static model.services.command.CommandConstants.USER;
 
-public class FindMailByCategoryCommand implements Command {
+public class FindMailByCustomCategoryCommand implements Command {
+
     @Override
     public String execute(HttpServletRequest request) {
 
@@ -21,7 +21,7 @@ public class FindMailByCategoryCommand implements Command {
         MailDAO mailDAO = daoFactory.getMailDAO();
 
         String category = request.getParameter(CATEGORY_NAME);
-        List<Mail> mails = mailDAO.getMailByCategory(category, currentUser);
+        List <Mail> mails = mailDAO.getMailByCustomCategory(category, currentUser);
 
         request.setAttribute(MAILS_ATTRIBUTE, mails);
         request.setAttribute(USER, currentUser);

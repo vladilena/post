@@ -49,10 +49,12 @@
                             <ul class="menu">
                                 <li><b><fmt:message key="text.sender.data"/></b> ${mail.sender}</li>
                                 <li><b><fmt:message key="text.recipient.data"/></b> ${mail.recipient}</li>
+                                    <%--<li><b><fmt:message key="text.time.data"/></b> <javatime:parseLocalDateTime value="${mail.dateTime}" pattern="yyyy-MM-dd hh:mm" var="parsedDate" /></li>--%>
                                 <li><b><fmt:message key="text.time.data"/></b> ${mail.dateTime}</li>
                                 <li><b><fmt:message key="text.title.data"/></b> ${mail.title}</li>
-                                <li><b><fmt:message key="text.tags.data"/></b>${mail.tags}</li>
-                                <li><b><fmt:message key="text.category.data"/></b> ${mail.category}</li>
+                                <li><b><fmt:message key="text.tags.data"/></b> ${mail.tags}</li>
+                                <li><b><fmt:message key="text.category.data"/></b> ${mail.category.uaCategoryName}</li>
+                                <li><b><fmt:message key="text.custom.category.data"/></b> ${mail.customCategory.categoryName}</li>
                                 <li><b><fmt:message key="text.message.data"/></b> ${mail.message}</li>
                             </ul>
 

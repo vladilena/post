@@ -7,37 +7,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class Mail {
-    private int id;
+    private long id;
     private String sender;
     private String recipient;
     private LocalDateTime dateTime;
     private String title;
     private ArrayList <String> tags;
-    private String category;
-    //private Category category;
+    private Category category;
+    private Category customCategory;
     private String message;
     private User relatedUser;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Mail mail = (Mail) o;
-        return sender.equals(mail.sender) &&
-                recipient.equals(mail.recipient) &&
-                message.equals(mail.message);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sender, recipient, message);
-    }
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -57,7 +42,6 @@ public class Mail {
         this.recipient = recipient;
     }
 
-
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -65,7 +49,6 @@ public class Mail {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-
 
     public String getTitle() {
         return title;
@@ -79,16 +62,24 @@ public class Mail {
         return tags;
     }
 
-    public void setTags(ArrayList <String> tags) {
+    public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Category getCustomCategory() {
+        return customCategory;
+    }
+
+    public void setCustomCategory(Category customCategory) {
+        this.customCategory = customCategory;
     }
 
     public String getMessage() {
@@ -107,12 +98,22 @@ public class Mail {
         this.relatedUser = relatedUser;
     }
 
-//    public Category getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(Category category) {
-//        this.category = category;
-//    }
-//
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mail mail = (Mail) o;
+        return sender.equals(mail.sender) &&
+                recipient.equals(mail.recipient) &&
+                Objects.equals(title, mail.title) &&
+                Objects.equals(tags, mail.tags) &&
+                Objects.equals(category, mail.category) &&
+                message.equals(mail.message) &&
+                relatedUser.equals(mail.relatedUser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sender, recipient, title, tags, category, message, relatedUser);
+    }
 }

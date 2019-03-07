@@ -59,7 +59,7 @@
                 <div class="menu-bar">
                     <c:forEach items="${requestScope.custom_categories}" var="custom_category">
                         <form role="form" class="btn btn-success btn-sm" method="post"
-                              action="controller?action=getmailbycategory">
+                              action="controller?action=getmailbycustomcategory">
                             <button type="submit" class="btn btn-success btn-sm" name="categoryName"
                                     value="${custom_category.categoryName}">${custom_category.categoryName}</button>
                         </form>
@@ -135,7 +135,8 @@
                         <li><b><fmt:message key="text.time.data"/></b> ${mail.dateTime}</li>
                         <li><b><fmt:message key="text.title.data"/></b> ${mail.title}</li>
                         <li><b><fmt:message key="text.tags.data"/></b> ${mail.tags}</li>
-                        <li><b><fmt:message key="text.category.data"/></b> ${mail.category}</li>
+                        <li><b><fmt:message key="text.category.data"/></b> ${mail.category.uaCategoryName}</li>
+                        <li><b><fmt:message key="text.custom.category.data"/></b> ${mail.customCategory.categoryName}</li>
                         <li><b><fmt:message key="text.message.data"/></b> ${mail.message}</li>
                     </ul>
 

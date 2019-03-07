@@ -87,19 +87,7 @@ public class UserDAO extends AbstractDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt(ID);
-                String email = rs.getString(EMAIL);
-                String password = rs.getString(PASSWORD);
-                String firstName = rs.getString(FIRST_NAME);
-                String lastName = rs.getString(LAST_NAME);
-
-                User user = new User();
-                user.setId(id);
-                user.setEmail(email);
-                user.setPassword(password);
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-
+                User user = parseUsersFromResultSet (rs);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -124,16 +112,7 @@ public class UserDAO extends AbstractDAO {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                int id = rs.getInt(ID);
-                String firstName = rs.getString(FIRST_NAME);
-                String lastName = rs.getString(LAST_NAME);
-
-                user = new User();
-                user.setId(id);
-                user.setEmail(email);
-                user.setFirstName(firstName);
-                user.setPassword(password);
-                user.setLastName(lastName);
+                user = parseUsersFromResultSet (rs);
             }
 
         } catch (SQLException e) {
@@ -151,23 +130,12 @@ public class UserDAO extends AbstractDAO {
             connection = getConnection();
             statement = connection.prepareStatement(USER_BY_ID);
 
-            statement.setInt(1, userId);
+            statement.setLong(1, userId);
 
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                int id = rs.getInt(ID);
-                String email = rs.getString(EMAIL);
-                String password = rs.getString(PASSWORD);
-                String firstName = rs.getString(FIRST_NAME);
-                String lastName = rs.getString(LAST_NAME);
-
-                user = new User();
-                user.setId(id);
-                user.setEmail(email);
-                user.setFirstName(firstName);
-                user.setPassword(password);
-                user.setLastName(lastName);
+                user = parseUsersFromResultSet (rs);
             }
 
         } catch (SQLException e) {
@@ -175,4 +143,19 @@ public class UserDAO extends AbstractDAO {
         }
         return user;
     }
+   private User parseUsersFromResultSet (ResultSet rs) throws SQLException {
+       long id = rs.getLong(ID);
+       String email = rs.getString(EMAIL);
+       String password = rs.getString(PASSWORD);
+       String firstName = rs.getString(FIRST_NAME);
+       String lastName = rs.getString(LAST_NAME);
+
+       User user = new User();
+       user.setId(id);
+       user.setEmail(email);
+       user.setPassword(password);
+       user.setFirstName(firstName);
+       user.setLastName(lastName);
+       return user;
+   }
 }

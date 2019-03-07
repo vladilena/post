@@ -16,7 +16,7 @@ public class ChangeCategoryCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String categoryForChange = request.getParameter(CATEGORY_FOR_CHANGE);
+   String categoryForChange = request.getParameter(CATEGORY_FOR_CHANGE);
 
         int result = 0;
 
@@ -26,7 +26,7 @@ public class ChangeCategoryCommand implements Command {
         DAOFactory daoFactory = DAOFactory.getInstance();
         MailDAO mailDAO = daoFactory.getMailDAO();
 
-        result = mailDAO.changeCategory(messageId, categoryForChange);
+        result = mailDAO.changeCategory(messageId, categoryForChange, currentUser);
 
         List<Mail> mails = mailDAO.getAllMails(currentUser);
 

@@ -9,7 +9,9 @@ public interface Columns {
     String LAST_NAME = "last_name";
 
     String CATEGORY = "category";
+    String CUSTOMER_CATEGORY = "customer_category";
     String UA_CATEGORY = "ua_category";
+    String CUSTOM_CATEGORY = "custom_category";
 
     String USER_ID = "user_id";
 

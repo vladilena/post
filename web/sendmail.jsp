@@ -25,10 +25,9 @@
     <title><fmt:message key="text.title.sendmail"/></title>
 </head>
 <body>
-<%--<c:if test="${not empty requestScope.invalidRecipient}">
+<c:if test="${not empty requestScope.invalidRecipient}">
     <div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.recipient"/></div>
 </c:if>
---%>
 <c:if test="${not empty requestScope.invalidTitle}">
     <div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.title"/></div>
 </c:if>

@@ -31,6 +31,7 @@ public class CommandFactory {
         comands.put("send", new SendMailCommand());
         comands.put("delete", new DeleteMailCommand());
         comands.put("changecategory", new ChangeCategoryCommand());
+        comands.put("getmailbycustomcategory", new FindMailByCustomCategoryCommand());
         comands.put("getmailbycategory", new FindMailByCategoryCommand());
         comands.put("findbytitle", new FindMailByTitleCommand());
         comands.put("findbytag", new FindMailByTagCommand());

@@ -36,7 +36,7 @@ public class CustomerCategoryDAO extends AbstractDAO {
             statement = connection.prepareStatement(INSERT_CUSTOM_CATEGORY);
 
             statement.setString(1, category.getCategoryName());
-            statement.setInt(2, category.getUserId());
+            statement.setLong(2, category.getUser().getId());
 
             resultAdded = statement.executeUpdate();
 
@@ -47,6 +47,28 @@ public class CustomerCategoryDAO extends AbstractDAO {
         return resultAdded;
     }
 
+    public long getCustomerCategoryIdByNameAndUserId(String categoryName, long userId) {
+        long customerCategoryId = 0;
+        Set<CustomerCategory> categories = new HashSet<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(CUSTOMER_CATEGORY_ID_BY_NAME_AND_USER);
+            statement.setString(1, categoryName);
+            statement.setLong(2, userId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                customerCategoryId = rs.getLong(ID);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customerCategoryId;
+    }
+
     public Set<CustomerCategory> getAllCustomerCategories(User user) {
         Set<CustomerCategory> categories = new HashSet<>();
         Connection connection = null;
@@ -54,20 +76,10 @@ public class CustomerCategoryDAO extends AbstractDAO {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(ALL_FROM_CUSTOMER_CATEGORY);
-            statement.setInt(1, user.getId());
+            statement.setLong(1, user.getId());
             ResultSet rs = statement.executeQuery();
-
             while (rs.next()) {
-                int id = rs.getInt(ID);
-                String categoryName = rs.getString(CATEGORY);
-                int userId = rs.getInt(USER_ID);
-
-                CustomerCategory newCategory = new CustomerCategory();
-
-                newCategory.setId(id);
-                newCategory.setCategoryName(categoryName);
-                newCategory.setUserId(userId);
-
+                CustomerCategory newCategory = parseCustomerCategoryResultSet(rs);
                 categories.add(newCategory);
             }
         } catch (SQLException e) {
@@ -75,30 +87,45 @@ public class CustomerCategoryDAO extends AbstractDAO {
         }
         return categories;
     }
-    public CustomerCategory getCustomerCategoryById(int categoryId) {
+
+    public CustomerCategory getCustomerCategoryById(User user) {
         CustomerCategory category = new CustomerCategory();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(CUSTOMER_CATEGORY_BY_ID);
-            statement.setInt(1, categoryId);
+            statement.setLong(1, user.getId());
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt(ID);
-                String categoryName = rs.getString(CATEGORY);
-                int userId = rs.getInt(USER_ID);
-
-               category.setId(id);
-               category.setCategoryName(categoryName);
-               category.setUserId(userId);
-
+                category = parseCustomerCategoryResultSet(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return category;
+    }
+
+    private CustomerCategory parseCustomerCategoryResultSet(ResultSet rs) throws SQLException {
+        long id = rs.getLong(ID);
+        String categoryName = rs.getString(CUSTOM_CATEGORY);
+        int userId = rs.getInt(USER_ID);
+        User currentUser = new User();
+        if (userId != 0) {
+            currentUser.setId(userId);
+            currentUser.setEmail(rs.getString(EMAIL));
+            currentUser.setPassword(rs.getString(PASSWORD));
+            currentUser.setFirstName(rs.getString(FIRST_NAME));
+            currentUser.setLastName(rs.getString(LAST_NAME));
+        }
+        CustomerCategory newCategory = new CustomerCategory();
+
+        newCategory.setId(id);
+        newCategory.setCategoryName(categoryName);
+        newCategory.setUser(currentUser);
+
+        return newCategory;
     }
 }
 

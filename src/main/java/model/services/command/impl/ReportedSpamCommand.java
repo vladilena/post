@@ -20,7 +20,7 @@ public class ReportedSpamCommand implements Command {
 
         DAOFactory daoFactory = DAOFactory.getInstance();
         MailDAO mailDAO = daoFactory.getMailDAO();
-        mailDAO.changeCategory(messageId, SPAM);
+        mailDAO.ReportedSpam(messageId);
         List<Mail> mails = mailDAO.getAllMails(currentUser);
 
         HttpSession session = request.getSession();

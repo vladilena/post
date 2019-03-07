@@ -1,6 +1,7 @@
 package model.services.command.impl;
 
 
+import model.dao.impl.CategoryDAO;
 import model.dao.impl.DAOFactory;
 import model.dao.impl.MailDAO;
 import model.entity.Mail;
@@ -44,7 +45,6 @@ public class SendMailCommand implements Command {
             mail.setRecipient(recipient);
             mail.setTitle(title);
             mail.setTags(new ArrayList<>(Arrays.asList(tags.split("\\s*,\\s*"))));
-            mail.setCategory(OUTGOING);
             mail.setMessage(message);
             mail.setRelatedUser(user);
 

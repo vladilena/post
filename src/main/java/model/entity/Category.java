@@ -3,7 +3,7 @@ package model.entity;
 import java.util.Objects;
 
 public class Category {
-    private int id;
+    private long id;
     private String categoryName;
     private String uaCategoryName;
 
@@ -15,11 +15,11 @@ public class Category {
         this.uaCategoryName = uaCategoryName;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

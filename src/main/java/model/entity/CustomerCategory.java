@@ -3,47 +3,50 @@ package model.entity;
 import java.util.Objects;
 
 public class CustomerCategory extends Category{
-    private int id;
+    private long id;
     private String categoryName;
-    private int userId;
-    //private User user;
+    private User user;
 
-    public int getId() {
+    @Override
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
+    @Override
     public String getCategoryName() {
         return categoryName;
     }
 
+    @Override
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         CustomerCategory that = (CustomerCategory) o;
-        return userId == that.userId &&
-                categoryName.equals(that.categoryName);
+        return categoryName.equals(that.categoryName) &&
+                user.equals(that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryName, userId);
+        return Objects.hash(super.hashCode(), categoryName, user);
     }
 }
 
