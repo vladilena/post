@@ -21,6 +21,9 @@
         <error-code>500</error-code>
         <location>/error/error500.jsp</location>
     </error-page>
+    <welcome-file-list>
+        <welcome-file>main.jsp</welcome-file>
+    </welcome-file-list>
     <!--<context-param>-->
         <!--<param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>-->
         <!--<param-value>en</param-value>-->

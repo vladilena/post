@@ -23,6 +23,10 @@
 <body>
 <br/>
 <br/>
+
+
+<c:choose>
+<c:when test="${not empty sessionScope.user}">
 <div class="menu-bar">
     <a class="btn btn-info" href="controller?action=main" role="button"><fmt:message key="text.main.page"/></a>
 </div>
@@ -30,5 +34,21 @@
 <br/>
 <br/>
 <p class="text-center"><fmt:message key="text.message.sent"/></p>
+</c:when>
+    <c:otherwise>
+        <div class="row">
+            <div class="col-md text-center">
+                <div class="menu-bar">
+                    <br/>
+                    <br/>
+                    <a class="btn btn-info" href="register.jsp" role="button"><fmt:message key="text.registration"/></a>
+                    <a class="btn btn-info" href="login.jsp" role="button"><fmt:message key="text.log.in"/></a></div>
+            </div>
+        </div>
+    </c:otherwise>
+</c:choose>
+
+
+
 </body>
 </html>

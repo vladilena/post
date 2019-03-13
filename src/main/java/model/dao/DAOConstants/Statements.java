@@ -7,6 +7,7 @@ public interface Statements {
     String ALL_FROM_CATEGORY = "SELECT * FROM category";
     String INSERT_MAIL = "INSERT INTO mail (sender, recipient, title, tags, category, message, related_user) VALUES (?,?,?,?,?,?,?)";
     String USER_BY_ID = "SELECT * FROM user WHERE id = ?";
+    String USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?";
     //String ALL_FROM_MAIL = "SELECT * FROM mail WHERE related_user = ? ORDER BY date_time DESC";
     String ALL_FROM_MAIL = "SELECT * FROM mail A left join user B on (A.related_user = B.id) \n" +
             "left join category C on (A.category = C.id) \n" +
@@ -34,7 +35,7 @@ public interface Statements {
     String CUSTOMER_CATEGORY_BY_ID = "SELECT * FROM customer_category WHERE id = ?";
     String CATEGORY_BY_ID = "SELECT * FROM category WHERE id = ?";
     String CUSTOMER_CATEGORY_ID_BY_NAME_AND_USER = "SELECT id FROM customer_category WHERE custom_category = ? and user_id = ?";
-    String REPORTED_SPAM = "UPDATE mail set category = 3 where id = ?";
+    String REPORTED_SPAM = "UPDATE mail set category = ? where id = ?";
     String CATEGORY_ID_BY_NAME = "SELECT id FROM category WHERE category = ?";
 
 }

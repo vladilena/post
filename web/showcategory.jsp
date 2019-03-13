@@ -25,11 +25,15 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<c:if test="${not empty requestScope.wrongInput}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.input"/></div>
-</c:if>
+
+
 <c:choose>
     <c:when test="${not empty sessionScope.user}">
+
+        <c:if test="${not empty requestScope.wrongInput}">
+            <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.input"/></div>
+        </c:if>
+
         <p class="text-center"><fmt:message
                 key="text.hello"/> ${sessionScope.user.firstName} ${sessionScope.user.lastName}</p>
         <div class="menu-bar">
@@ -38,8 +42,8 @@
         <br/>
         <br/>
         <c:choose>
-            <c:when test="${not empty sessionScope.noInfo}">
-                <p><fmt:message key="text.error.no.messages"/></p>
+            <c:when test="${not empty requestScope.noInfo}">
+                <div class="alert alert-danger" role="alert"><fmt:message key="text.error.no.messages"/></div>
             </c:when>
             <c:otherwise>
                 <div class="row">
@@ -83,8 +87,8 @@
     </c:when>
     <c:otherwise>
         <div class="menu-bar">
-            <a class="btn btn-info" href="register.jsp" role="button"><fmt:message key="text.log.in"/></a>
-            <a class="btn btn-info" href="login.jsp" role="button"><fmt:message key="text.registration"/></a></div>
+            <a class="btn btn-info" href="controller?action=registerredir" role="button"><fmt:message key="text.log.in"/></a>
+            <a class="btn btn-info" href="controller?action=loginredir" role="button"><fmt:message key="text.registration"/></a></div>
     </c:otherwise>
 </c:choose>
 

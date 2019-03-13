@@ -26,14 +26,6 @@
 </head>
 
 <body>
-        <div class="row">
-            <div class="col-md text-center">
-                <div class="menu-bar">
-                    <br/>
-                    <br/>
-                    <a class="btn btn-info" href="register.jsp" role="button"><fmt:message key="text.registration"/></a>
-                    <a class="btn btn-info" href="login.jsp" role="button"><fmt:message key="text.log.in"/></a></div>
-            </div>
-        </div>
+       end
 </body>
 </html>

@@ -45,14 +45,14 @@ public class CategoryDAO extends AbstractDAO {
         return categories;
     }
 
-    public Category getCategoryById(int categoryId) {
+    public Category getCategoryById(long categoryId) {
         Category category = new Category();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(CATEGORY_BY_ID);
-            statement.setInt(1,categoryId);
+            statement.setLong(1,categoryId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 category = parseCategoryFromResultSet(rs);

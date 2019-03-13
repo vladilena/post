@@ -1,15 +1,16 @@
 package command;
 
-import model.dao.impl.CustomerCategoryDAO;
-import model.dao.impl.DAOFactory;
-import model.dao.impl.UserDAO;
 import model.entity.CustomerCategory;
 import model.entity.User;
-import model.services.command.Command;
-import model.services.command.impl.CreateCategoryCommand;
-import model.services.command.impl.LoginCommand;
-import model.services.command.impl.LogoutCommand;
-import model.services.command.impl.RegisterCommand;
+import model.command.Command;
+import model.command.impl.category.CreateCategoryCommand;
+import model.command.impl.auth.LoginCommand;
+import model.command.impl.auth.LogoutCommand;
+import model.command.impl.auth.RegisterCommand;
+import model.services.CustomerCategoryService;
+import model.services.UserService;
+import model.services.impl.DefaultCustomerCategoryService;
+import model.services.impl.DefaultUserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,15 +34,14 @@ public class CommandTest {
         wrapper.addParam("first_name", "Мар'яна");
         wrapper.addParam("last_name", "Лещенко");
 
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        UserDAO userDAO = daoFactory.getUserDAO();
-        Set<User> users = userDAO.getAllUsers();
+        UserService userService = DefaultUserService.getInstance();
+        Set<User> users = userService.getAllUsers();
         int currentSize = users.size();
 
         Command command = new RegisterCommand();
         String page = command.execute(wrapper);
 
-        users = userDAO.getAllUsers();
+        users = userService.getAllUsers();
         int newSize = users.size();
 
         System.out.println(page);
@@ -86,14 +86,13 @@ public class CommandTest {
 
         Command command = new CreateCategoryCommand();
 
-        DAOFactory factory = DAOFactory.getInstance();
-        CustomerCategoryDAO customerCategoryDAO = factory.getCustomerCategoryDAO();
-        Set<CustomerCategory> categories = customerCategoryDAO.getAllCustomerCategories(user);
+        CustomerCategoryService customerCategoryService = DefaultCustomerCategoryService.getInstance();
+        Set<CustomerCategory> categories = customerCategoryService.getAllCustomerCategories(user);
         int oldSize = categories.size();
 
         command.execute(wrapper);
 
-        categories = customerCategoryDAO.getAllCustomerCategories(user);
+        categories = customerCategoryService.getAllCustomerCategories(user);
         int newSize = categories.size();
 
         Assert.assertEquals(oldSize + 1, newSize);

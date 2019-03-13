@@ -178,8 +178,8 @@
                 <div class="menu-bar">
                     <br/>
                     <br/>
-                    <a class="btn btn-info" href="register.jsp" role="button"><fmt:message key="text.registration"/></a>
-                    <a class="btn btn-info" href="login.jsp" role="button"><fmt:message key="text.log.in"/></a></div>
+                    <a class="btn btn-info" href="controller?action=registrredir" role="button"><fmt:message key="text.registration"/></a>
+                    <a class="btn btn-info" href="controller?action=loginredir" role="button"><fmt:message key="text.log.in"/></a></div>
             </div>
         </div>
     </c:otherwise>

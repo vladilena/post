@@ -30,20 +30,23 @@
 <c:if test="${not empty requestScope.successRegistration}">
     <div class="alert alert-success" role="alert"><fmt:message key="text.success.registration"/></div>
 </c:if>
-<c:if test="${not empty requestScope.invalidlogin}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.email.format"/></div>
-</c:if>
-<c:if test="${not empty requestScope.invalidPassword}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.password.format"/></div>
-</c:if>
-<c:if test="${not empty requestScope.invalidFirstName}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.first.name.format"/></div>
-</c:if>
-<c:if test="${not empty requestScope.invalidLastName}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.last.name.format"/></div>
-</c:if>
+<%--<c:if test="${not empty requestScope.invalidlogin}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.email.format"/></div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty requestScope.invalidPassword}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.password.format"/></div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty requestScope.invalidFirstName}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.first.name.format"/></div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty requestScope.invalidLastName}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.wrong.last.name.format"/></div>--%>
+<%--</c:if>--%>
 <c:if test="${not empty requestScope.notAdd}">
     <div class="alert alert-danger" role="alert"><fmt:message key="text.user.exists"/></div>
+</c:if>
+<c:if test="${not empty requestScope.wrongInput}">
+    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.input"/></div>
 </c:if>
 <div class="row">
     <div class="col-3"></div>

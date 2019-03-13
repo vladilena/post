@@ -26,10 +26,10 @@ public class CustomerCategoryDAO extends AbstractDAO {
         return instance;
     }
 
-    public int addCustomCategory(CustomerCategory category) {
+    public boolean addCustomCategory(CustomerCategory category) {
         Connection connection = null;
         PreparedStatement statement = null;
-        int resultAdded = 0;
+        boolean resultAdded = false;
 
         try {
             connection = getConnection();
@@ -38,7 +38,9 @@ public class CustomerCategoryDAO extends AbstractDAO {
             statement.setString(1, category.getCategoryName());
             statement.setLong(2, category.getUser().getId());
 
-            resultAdded = statement.executeUpdate();
+            if(statement.executeUpdate()>0){
+                resultAdded = true;
+            }
 
 
         } catch (SQLException e) {
@@ -88,14 +90,14 @@ public class CustomerCategoryDAO extends AbstractDAO {
         return categories;
     }
 
-    public CustomerCategory getCustomerCategoryById(User user) {
+    public CustomerCategory getCustomerCategoryById(long categoryId) {
         CustomerCategory category = new CustomerCategory();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(CUSTOMER_CATEGORY_BY_ID);
-            statement.setLong(1, user.getId());
+            statement.setLong(1, categoryId);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {

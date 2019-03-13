@@ -25,20 +25,23 @@
     <title><fmt:message key="text.title.sendmail"/></title>
 </head>
 <body>
-<c:if test="${not empty requestScope.invalidRecipient}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.recipient"/></div>
-</c:if>
-<c:if test="${not empty requestScope.invalidTitle}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.title"/></div>
-</c:if>
-<c:if test="${not empty requestScope.invalidTags}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.tags"/></div>
-</c:if>
-<c:if test="${not empty requestScope.invalidMessage}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.message"/></div>
-</c:if>
+<%--<c:if test="${not empty requestScope.invalidRecipient}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.recipient"/></div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty requestScope.invalidTitle}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.title"/></div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty requestScope.invalidTags}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.tags"/></div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty requestScope.invalidMessage}">--%>
+    <%--<div class="alert alert-danger" role="alert"><fmt:message key="text.alert.invalid.message"/></div>--%>
+<%--</c:if>--%>
 <c:if test="${not empty requestScope.problem}">
     <div class="alert alert-danger" role="alert"><fmt:message key="text.problem.with.sending"/></div>
+</c:if>
+<c:if test="${not empty requestScope.wrongInput}">
+    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.input"/></div>
 </c:if>
 <div class="row">
     <div class="col-3"></div>

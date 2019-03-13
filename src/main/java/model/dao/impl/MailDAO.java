@@ -1,5 +1,6 @@
 package model.dao.impl;
 
+import model.dao.factory.DAOFactory;
 import model.entity.Category;
 import model.entity.CustomerCategory;
 import model.entity.Mail;
@@ -22,17 +23,17 @@ public class MailDAO extends AbstractDAO {
     private MailDAO() {
     }
 
-    static MailDAO getInstance() {
+    public static MailDAO getInstance() {
         if (instance == null) {
             instance = new MailDAO();
         }
         return instance;
     }
 
-    public int sendMail(Mail mail) {
+    public boolean sendMail(Mail mail, long categoryId) {
         Connection connection = null;
         PreparedStatement statement = null;
-        int resultAdded = 0;
+        boolean result = false;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(INSERT_MAIL);
@@ -41,24 +42,25 @@ public class MailDAO extends AbstractDAO {
             statement.setString(2, mail.getRecipient());
             statement.setString(3, mail.getTitle());
             statement.setString(4, mail.getTags().toString());
-            statement.setLong(5, 2);
+            statement.setLong(5, categoryId);
             statement.setString(6, mail.getMessage());
             statement.setLong(7, mail.getRelatedUser().getId());
 
-            resultAdded = statement.executeUpdate();
+           if(statement.executeUpdate()>0){
+               result = true;
+           }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return resultAdded;
+        return result;
     }
 
-    public List<Mail> getAllMails(User user) {
+    public List<Mail> getAllMails(long userId) {
         List<Mail> mails = new LinkedList<>();
         Connection connection = null;
         PreparedStatement statement = null;
-        long userId = user.getId();
         try {
             connection = getConnection();
             statement = connection.prepareStatement(ALL_FROM_MAIL);
@@ -94,19 +96,17 @@ public class MailDAO extends AbstractDAO {
         return mails;
     }
 
-    public List<Mail> getMailByCustomCategory(String category, User user) {
+    public List<Mail> getMailByCustomCategory(long categoryId, long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        CustomerCategoryDAO customerCategoryDAO = daoFactory.getCustomerCategoryDAO();
         List<Mail> mails = new LinkedList<>();
-        long categoryId = customerCategoryDAO.getCustomerCategoryIdByNameAndUserId(category, user.getId());
+
         try {
             connection = getConnection();
             statement = connection.prepareStatement(ALL_FROM_MAIL_WHERE_CUSTOM_CATEGORY_AND_USER);
 
             statement.setLong(1, categoryId);
-            statement.setLong(2, user.getId());
+            statement.setLong(2, userId);
 
             ResultSet rs = statement.executeQuery();
 
@@ -118,20 +118,17 @@ public class MailDAO extends AbstractDAO {
         }
         return mails;
     }
-    public List<Mail> getMailByCategory(String category, User user) {
+
+    public List<Mail> getMailByCategory(long categoryId, long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        CategoryDAO categoryDAO = daoFactory.getCategoryDAO();
         List<Mail> mails = new LinkedList<>();
-        long categoryId = categoryDAO.getCategoryIdByName(category);
         try {
             connection = getConnection();
-            //не работает из-за одинаковых названий колонок. Нужно переделать подзапрос
             statement = connection.prepareStatement(ALL_FROM_MAIL_WHERE_CATEGORY_AND_USER);
 
             statement.setLong(1, categoryId);
-            statement.setLong(2, user.getId());
+            statement.setLong(2, userId);
 
             ResultSet rs = statement.executeQuery();
 
@@ -145,21 +142,17 @@ public class MailDAO extends AbstractDAO {
     }
 
 
-    public List<Mail> getMailByTimePeriod(String from, String to, User user) {
+    public List<Mail> getMailByTimePeriod(Timestamp fromStamp, Timestamp toStamp, long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
         List<Mail> mails = new LinkedList<>();
-        //2019-12-02T12:30
-        // 2019-03-01 13:32:09
 
-        Timestamp fromStamp = Timestamp.valueOf(from.replace("T", " ") + ":00");
-        Timestamp toStamp = Timestamp.valueOf(to.replace("T", " ") + ":00");
         try {
             connection = getConnection();
             statement = connection.prepareStatement(MAIL_IN_TIME_PERIOD);
             statement.setTimestamp(1, fromStamp);
             statement.setTimestamp(2, toStamp);
-            statement.setLong(3, user.getId());
+            statement.setLong(3, userId);
 
             ResultSet rs = statement.executeQuery();
 
@@ -173,56 +166,62 @@ public class MailDAO extends AbstractDAO {
         return mails;
     }
 
-    public void deleteMail(long messageId) {
+    public boolean deleteMail(long messageId) {
         Connection connection = null;
         PreparedStatement statement = null;
-
+        boolean result = false;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(DELETE_FROM_MAIL);
             statement.setLong(1, messageId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() > 0) {
+                result = true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+return result;
+    }
 
-    }
-public int ReportedSpam (long messageId) {
-    Connection connection = null;
-    PreparedStatement statement = null;
-    int resultAdded = 0;
-    try {
-        connection = getConnection();
-        statement = connection.prepareStatement(REPORTED_SPAM);
-        statement.setLong(1, messageId);
-        resultAdded = statement.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-return resultAdded;
-}
-    public int changeCategory(long messageId, String category, User user) {
+    public boolean reportedSpam(long messageId, long categoryId) {
         Connection connection = null;
         PreparedStatement statement = null;
-        DAOFactory factory = DAOFactory.getInstance();
-        CustomerCategoryDAO customerCategoryDAO = factory.getCustomerCategoryDAO();
-        int resultAdded = 0;
+        boolean result = false;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(REPORTED_SPAM);
+            statement.setLong(1, categoryId);
+            statement.setLong(2, messageId);
+            if (statement.executeUpdate()>0){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean changeCategory(long messageId, long categoryId, long userId) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        boolean result = false;
         try {
             connection = getConnection();
             statement = connection.prepareStatement(CHANGE_CATEGORY);
-            long categoryId = customerCategoryDAO.getCustomerCategoryIdByNameAndUserId(category, user.getId());
             statement.setLong(1, categoryId);
             statement.setLong(2, messageId);
-            resultAdded = statement.executeUpdate();
+            if(statement.executeUpdate()>0){
+                result  = true;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return resultAdded;
+        return result;
     }
 
-    public List<Mail> getMailByTitle(String title, User user) {
+    public List<Mail> getMailByTitle(String title, long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
         List<Mail> mails = new LinkedList<>();
@@ -230,7 +229,7 @@ return resultAdded;
             connection = getConnection();
             statement = connection.prepareStatement(GET_MAIL_BY_TITLE);
             statement.setString(1, title);
-            statement.setLong(2, user.getId());
+            statement.setLong(2, userId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 mails.add(parseFromResultSet(rs));
@@ -242,7 +241,7 @@ return resultAdded;
         return mails;
     }
 
-    public List<Mail> getMailByTag(String tag, User currentUser) {
+    public List<Mail> getMailByTag(String tag, long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
         List<Mail> mails = new LinkedList<>();
@@ -250,7 +249,7 @@ return resultAdded;
             connection = getConnection();
             statement = connection.prepareStatement(FIND_MAIL_BY_TAG);
             statement.setString(1, "%" + tag + "%");
-            statement.setLong(2, currentUser.getId());
+            statement.setLong(2, userId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 mails.add(parseFromResultSet(rs));
@@ -262,7 +261,7 @@ return resultAdded;
         return mails;
     }
 
-    public List<Mail> getMailBySenderOrRecipient(String email, User user) {
+    public List<Mail> getMailBySenderOrRecipient(String email, long userId) {
         Connection connection = null;
         PreparedStatement statement = null;
         List<Mail> mails = new LinkedList<>();
@@ -271,7 +270,7 @@ return resultAdded;
             statement = connection.prepareStatement(FIND_MAIL_BY_RECIPIENT_OR_SENDER);
             statement.setString(1, email);
             statement.setString(2, email);
-            statement.setLong(3, user.getId());
+            statement.setLong(3, userId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 mails.add(parseFromResultSet(rs));
@@ -282,6 +281,7 @@ return resultAdded;
         }
         return mails;
     }
+
     private Mail parseFromResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt(ID);
         String sender = rs.getString(SENDER);
@@ -291,7 +291,7 @@ return resultAdded;
         String tags = rs.getString(TAGS);
         long relatedCategoryId = rs.getLong(CATEGORY);
         Category currentCategory = new Category();
-        if (relatedCategoryId !=0){
+        if (relatedCategoryId != 0) {
             String categoryName = rs.getString(CATEGORY);
             String uaCategoryName = rs.getString(UA_CATEGORY);
             currentCategory.setId(relatedCategoryId);
@@ -300,11 +300,11 @@ return resultAdded;
         }
         long relatedUserId = rs.getLong(RELATED_USER);
         User relatedUser = new User();
-        if (relatedUserId !=0){
-            String userEmail =rs.getString(EMAIL);
-            String userPassword =rs.getString(PASSWORD);
-            String userFirstName =rs.getString(FIRST_NAME);
-            String userLastName =rs.getString(LAST_NAME);
+        if (relatedUserId != 0) {
+            String userEmail = rs.getString(EMAIL);
+            String userPassword = rs.getString(PASSWORD);
+            String userFirstName = rs.getString(FIRST_NAME);
+            String userLastName = rs.getString(LAST_NAME);
 
             relatedUser.setId(relatedUserId);
             relatedUser.setEmail(userEmail);
@@ -314,7 +314,7 @@ return resultAdded;
         }
         long relatedCustomCategoryId = rs.getLong(CUSTOMER_CATEGORY);
         CustomerCategory currentCustomerCategory = new CustomerCategory();
-        if (relatedCustomCategoryId !=0){
+        if (relatedCustomCategoryId != 0) {
             String customCategoryName = rs.getString(CUSTOM_CATEGORY);
             currentCustomerCategory.setId(relatedCustomCategoryId);
             currentCustomerCategory.setCategoryName(customCategoryName);

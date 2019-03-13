@@ -27,10 +27,10 @@ public class UserDAO extends AbstractDAO {
         return instance;
     }
 
-    public int addUser(User user) {
+    public boolean addUser(User user) {
         Connection connection = null;
         PreparedStatement statement = null;
-        int resultAdded = 0;
+        boolean resultAdded = false;
 
         try {
             connection = getConnection();
@@ -42,7 +42,9 @@ public class UserDAO extends AbstractDAO {
             statement.setString(4, user.getLastName());
 
 
-            resultAdded = statement.executeUpdate();
+            if(statement.executeUpdate()>0){
+                resultAdded = true;
+            }
 
 
         } catch (SQLException e) {
@@ -120,7 +122,7 @@ public class UserDAO extends AbstractDAO {
         }
         return user;
     }
-    public User getUserById(int userId) {
+    public User getUserById(long userId) {
         User user = null;
 
         Connection connection = null;
@@ -131,6 +133,30 @@ public class UserDAO extends AbstractDAO {
             statement = connection.prepareStatement(USER_BY_ID);
 
             statement.setLong(1, userId);
+
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                user = parseUsersFromResultSet (rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public User getUserByEmail(String email) {
+        User user = null;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(USER_BY_EMAIL);
+
+            statement.setString(1, email);
 
             ResultSet rs = statement.executeQuery();
 

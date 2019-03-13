@@ -27,9 +27,6 @@
 <c:if test="${not empty requestScope.notExists}">
     <div class="alert alert-danger" role="alert"><fmt:message key="text.error.not.exists"/></div>
 </c:if>
-<c:if test="${not empty requestScope.wrongInput}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="text.error.wrong.input"/></div>
-</c:if>
 <div class="row">
     <div class="col-4">
     </div>
