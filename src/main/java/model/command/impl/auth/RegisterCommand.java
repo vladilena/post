@@ -6,6 +6,7 @@ import model.command.Command;
 import model.services.UserService;
 import model.services.impl.DefaultUserService;
 import controller.validation.Validation;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +29,7 @@ public class RegisterCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String resultPage = "register.jsp";
+        String resultPage = PathManager.getProperty("path.page.registration");
 
         User user = getUserFromRequest(request);
 
@@ -37,7 +38,7 @@ public class RegisterCommand implements Command {
             logger.info("User are valid");
             if (createUser(user)) {
                 logger.info("User was added to a database");
-                resultPage = "controller?action=main";
+                resultPage = PathManager.getProperty("path.page.redirect.main");
                 request.getSession().setAttribute(SUCCESS_REGISTRATION_ATTRIBUTE, true);
             } else {
                 logger.debug("User wasn't added to a database");

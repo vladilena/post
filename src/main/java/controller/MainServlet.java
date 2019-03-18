@@ -54,14 +54,14 @@ public class MainServlet extends HttpServlet {
     private void forwardToPage(String page, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         logger.info("Forward to: "+page);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/"+page);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);
     }
 
     private void redirectToPage(String page, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         logger.info("Redirect to "+page);
-        response.sendRedirect(request.getContextPath() + "/"+page);
+        response.sendRedirect(request.getContextPath() +page);
     }
 
     private void forwardToNotFoundErrorPage(HttpServletRequest request, HttpServletResponse response)

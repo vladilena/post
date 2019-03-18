@@ -7,6 +7,7 @@ import model.command.Command;
 import model.services.MailService;
 import model.services.impl.DefaultMailService;
 import controller.validation.Validation;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,7 +48,7 @@ public class FindMailByTitleCommand implements Command {
             request.setAttribute(WRONG_INPUT_ATTRIBUTE, true);
         }
 
-        return "showcategory.jsp";
+        return PathManager.getProperty("path.page.show.category");
     }
 
     private boolean inputChecked(String title) {

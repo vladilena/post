@@ -1,7 +1,5 @@
 package model.command.impl.mail;
 
-
-import controller.MainServlet;
 import controller.validation.DefaultValidation;
 import model.entity.Mail;
 import model.entity.User;
@@ -9,6 +7,7 @@ import model.command.Command;
 import model.services.MailService;
 import model.services.impl.DefaultMailService;
 import controller.validation.Validation;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +31,7 @@ public class SendMailCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String resultPage = "sendmail.jsp";
+        String resultPage = PathManager.getProperty("path.page.send.mail");
 
 
         Mail mail = getMailFromRequest(request);
@@ -41,7 +40,7 @@ public class SendMailCommand implements Command {
             logger.info("Mail is valid");
             if (mailService.sendMail(mail)) {
                 logger.info("Mail was sent");
-                resultPage = "successful.jsp";
+                resultPage = PathManager.getProperty("path.page.successful.send");
             } else {
                 logger.debug("Mail wasn't sent");
                 request.setAttribute(PROBLEM_ATTRIBUTE, true);

@@ -7,6 +7,7 @@ import model.command.Command;
 import model.services.MailService;
 import model.services.impl.DefaultMailService;
 import controller.validation.Validation;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,13 +16,13 @@ import java.util.List;
 
 import static model.command.CommandConstants.*;
 
-public class FindMailBySenderOrRecipient implements Command {
-    private static final Logger logger = LogManager.getLogger(FindMailBySenderOrRecipient.class);
+public class FindMailBySenderOrRecipientCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(FindMailBySenderOrRecipientCommand.class);
 
     private static MailService mailService;
     private static Validation validation;
 
-    public FindMailBySenderOrRecipient() {
+    public FindMailBySenderOrRecipientCommand() {
         mailService = DefaultMailService.getInstance();
         validation = DefaultValidation.getInstance();
     }
@@ -43,7 +44,7 @@ public class FindMailBySenderOrRecipient implements Command {
             logger.debug("Email is invalid");
             request.setAttribute(WRONG_INPUT_ATTRIBUTE, true);
         }
-        return "showcategory.jsp";
+        return PathManager.getProperty("path.page.show.category");
     }
 
     private boolean inputChecked(String email) {

@@ -3,6 +3,7 @@ package model.command.impl.auth;
 
 
 import model.command.Command;
+import model.util.PathManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,6 @@ public class LogoutCommand implements Command {
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute(USER);
-        return "controller?action=main";
+        return PathManager.getProperty("path.page.redirect.main");
     }
 }

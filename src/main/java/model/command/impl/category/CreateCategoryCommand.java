@@ -8,10 +8,12 @@ import model.command.Command;
 import model.services.CustomerCategoryService;
 import model.services.impl.DefaultCustomerCategoryService;
 import controller.validation.Validation;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Path;
 import java.util.Set;
 
 import static model.command.CommandConstants.*;
@@ -54,7 +56,7 @@ public class CreateCategoryCommand implements Command {
             request.setAttribute(WRONG_CATEGORY_INPUT_ATTRIBUTE, true);
         }
 
-        return "controller?action=main";
+        return PathManager.getProperty("path.page.redirect.main");
     }
 
     private boolean categoryChecked(String categoryName) {

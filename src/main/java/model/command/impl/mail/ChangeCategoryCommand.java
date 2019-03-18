@@ -5,6 +5,7 @@ import model.entity.User;
 import model.command.Command;
 import model.services.MailService;
 import model.services.impl.DefaultMailService;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,6 +40,7 @@ public class ChangeCategoryCommand implements Command {
             logger.debug("Category wasn't changed");
             request.setAttribute(PROBLEM_WITH_CATEGORY_CHANGE, true);
         }
-        return "controller?action=main";
+        return PathManager.getProperty("path.page.redirect.main");
+
     }
 }

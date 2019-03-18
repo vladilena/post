@@ -5,6 +5,7 @@ import model.entity.User;
 import model.command.Command;
 import model.services.MailService;
 import model.services.impl.DefaultMailService;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class FindMailByCustomCategoryCommand implements Command {
             logger.info("No mail with such attributes");
             request.setAttribute(NOINFO_ATTRIBUTE, true);
         }
-        return "showcategory.jsp";
+        return PathManager.getProperty("path.page.show.category");
     }
 
     private List<Mail> getMailByCategory(String category, User user) {

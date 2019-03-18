@@ -6,6 +6,7 @@ import model.entity.User;
 import model.command.Command;
 import model.services.MailService;
 import model.services.impl.DefaultMailService;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +38,7 @@ public class DeleteMailCommand implements Command {
             logger.debug("Mail wasn't deleted");
             request.setAttribute(DELETE_PROBLEM, true);
         }
-        return "controller?action=main";
+        return PathManager.getProperty("path.page.redirect.main");
     }
 
     private boolean deleteMail(long mailId) {

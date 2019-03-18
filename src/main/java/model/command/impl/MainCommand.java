@@ -12,6 +12,7 @@ import model.services.MailService;
 import model.services.impl.DefaultCategoryService;
 import model.services.impl.DefaultCustomerCategoryService;
 import model.services.impl.DefaultMailService;
+import model.util.PathManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,6 +45,6 @@ public class MainCommand implements Command {
             request.setAttribute(MAILS_ATTRIBUTE, mails);
             request.setAttribute(CATEGORIES_ATTRIBUTE, categories);
         }
-        return "main.jsp";
+        return PathManager.getProperty("path.page.main");
     }
 }

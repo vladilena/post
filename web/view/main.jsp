@@ -35,7 +35,7 @@
                         key="text.hello"/> ${sessionScope.user.firstName} ${sessionScope.user.lastName}</p>
 
                 <div class="menu-bar">
-                    <a class="btn btn-info" href="sendmail.jsp" role="button"><fmt:message
+                    <a class="btn btn-info" href="controller?action=sendredir" role="button"><fmt:message
                             key="text.send.email"/></a>
                     <a class="btn btn-info" href="controller?action=logout" role="button"><fmt:message
                             key="text.logout"/></a>

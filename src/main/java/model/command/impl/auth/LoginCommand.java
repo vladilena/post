@@ -6,6 +6,7 @@ import model.command.Command;
 import model.services.LoginService;
 import model.services.impl.DefaultLoginService;
 import controller.validation.Validation;
+import model.util.PathManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +28,7 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String resultPage = "login.jsp";
+        String resultPage = PathManager.getProperty("path.page.login");
 
         String email = request.getParameter(EMAIL);
         String password = request.getParameter(PASSWORD);
@@ -36,7 +37,7 @@ public class LoginCommand implements Command {
         if (user != null) {
             logger.info("user exists");
             request.getSession().setAttribute(USER, user);
-            resultPage = "controller?action=main";
+            resultPage = PathManager.getProperty("path.page.redirect.main");
         } else {
             logger.info("user not exists");
             request.setAttribute(NOT_EXISTS_ATTRIBUTE, true);

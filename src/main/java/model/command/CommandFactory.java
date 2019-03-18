@@ -12,6 +12,7 @@ import model.command.impl.mail.ReportedSpamCommand;
 import model.command.impl.mail.SendMailCommand;
 import model.command.impl.redirect.LoginRedirectCommand;
 import model.command.impl.redirect.RegisterRedirectCommand;
+import model.command.impl.redirect.SendRedirectCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,10 +43,11 @@ public class CommandFactory {
         commands.put("findbytitle", new FindMailByTitleCommand());
         commands.put("findbytag", new FindMailByTagCommand());
         commands.put("reportedspam", new ReportedSpamCommand());
-        commands.put("findbysenderorrecipient", new FindMailBySenderOrRecipient());
+        commands.put("findbysenderorrecipient", new FindMailBySenderOrRecipientCommand());
         commands.put("findbytimeperiod", new FindMailInTimePeriodCommand());
         commands.put("loginredir", new LoginRedirectCommand());
         commands.put("registerredir", new RegisterRedirectCommand());
+        commands.put("sendredir", new SendRedirectCommand());
 
     }
 
